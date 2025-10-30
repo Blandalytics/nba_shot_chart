@@ -325,13 +325,14 @@ st.dataframe(
             finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
     .rename(columns={
         'PLAYER_NAME':'Player',
+        'SHOT_ATTEMPTED_FLAG':'Shots',
         'SHOT_PTS':'Points',
         'volume_points':'Volume Pts',
         'quality_points':'Quality Pts',
         'finishing_points':'Finishing Pts'
     })
     .groupby('Player')
-    [['Points','Volume Pts','Quality Pts','Finishing Pts']]
+    [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
     .sum()
     .round(1)
     .sort_values('Points',ascending=False)
