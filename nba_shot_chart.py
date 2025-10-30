@@ -20,7 +20,7 @@ pl_background = '#162B50'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-fpath = 'https://github.com/Blandalytics/nba_shot_chart/blob/main/Arimo/Arimo-Regular.ttf'
+fpath = os.path.join(os.getcwd(), 'Arimo/Arimo-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
 
 sns.set(font='Arimo')
