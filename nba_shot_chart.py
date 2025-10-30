@@ -18,7 +18,7 @@ pl_background = '#162B50'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-# sns.set(font='Arimo')
+sns.set(font='https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap')
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
