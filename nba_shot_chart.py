@@ -317,6 +317,13 @@ def shot_summary(player_id,game_date=game_date):
 
 shot_summary(player_id)
 
-st.dataframe(season_df.assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
-                              quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
-                              finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']).groupby('PLAYER_NAME')[['SHOT_PTS','volume_points','quality_points','finishing_points']].sum().sort_values('SHOT_PTS',ascending=False)))
+st.dataframe(
+    season_df
+    .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
+            quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
+            finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+    .groupby('PLAYER_NAME')
+    [['SHOT_PTS','volume_points','quality_points','finishing_points']]
+    .sum()
+    .sort_values('SHOT_PTS',ascending=False)
+)
