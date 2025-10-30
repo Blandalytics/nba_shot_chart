@@ -245,7 +245,7 @@ def shot_summary(player_id,game_date=game_date):
         cb.ax.set(xlabel='')
     cb.ax.axvline(expected_points,color='k',linewidth=2)
     # cb.ax.axvline(pts_per_shot,color='k',linewidth=0.5,linestyle='--')
-    ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18)
+    ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
     ax2 = fig.add_subplot(gs[:,0])
     
@@ -274,11 +274,11 @@ def shot_summary(player_id,game_date=game_date):
         )
         ax2.text(categories[i],max_val*1.07,f'{categories[i]:}',
                  fontsize=11,
-                ha='center',va='center',color='w')
+                ha='center',va='center',color='w',fontproperties=prop)
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
                  fontsize=12,
                 ha='center',va='center',color=color,fontweight='bold',
-                bbox=dict(boxstyle='round', fc='w', ec=color))
+                bbox=dict(boxstyle='round', fc='w', ec=color,fontproperties=prop))
         
     xlim = (-0.3,2.4)
     ax2.set(xlim=xlim)
@@ -300,7 +300,7 @@ def shot_summary(player_id,game_date=game_date):
     ax2.axhline(int(round(sum(values),0)),color='w',
                 xmin=xlim[0]+0.4,
                xmax=(xlim[1] + 0.45) / x_width)
-    ax2.text(1,max_val*1.13,f'{points_scored} Points Scored',ha='center',fontsize=18)
+    ax2.text(1,max_val*1.13,f'{points_scored} Points Scored',ha='center',fontsize=18,fontproperties=prop)
     # ax2.yaxis.set_visible(False)
     ax2.axis('off')
     ax2.set(xlim=(xlim[0]-0.4,xlim[1]))
@@ -310,7 +310,7 @@ def shot_summary(player_id,game_date=game_date):
     date_text = game_date.strftime('%#m/%#d/%y')
     
     fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=22, 
-                 x=0.51,y=0.91,ha='center',va='center')
+                 x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
     sns.despine()
     st.pyplot(fig)
