@@ -401,5 +401,7 @@ else:
         .round(2)
         .sort_values('Points',ascending=False)
     )
+st.write('Season Leaderboard')
 st.dataframe(attempt_df)
+st.write('Game Leaderboard')
 st.dataframe(game_df)
