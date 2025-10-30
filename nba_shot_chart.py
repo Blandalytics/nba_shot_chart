@@ -309,7 +309,7 @@ def shot_summary(player_id,game_date=game_date):
     player_name = game_data['PLAYER_NAME'].iloc[0]
     date_text = game_date.strftime('%#m/%#d/%y')
     
-    fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=22, 
+    fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=25, 
                  x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
     sns.despine()
