@@ -277,8 +277,8 @@ def shot_summary(player_id,game_date=game_date):
                 ha='center',va='center',color='w',fontproperties=prop)
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
                  fontsize=12,
-                ha='center',va='center',color=color,fontweight='bold',
-                bbox=dict(boxstyle='round', fc='w', ec=color,fontproperties=prop))
+                ha='center',va='center',color=color,fontweight='bold',fontproperties=prop,
+                bbox=dict(boxstyle='round', fc='w', ec=color))
         
     xlim = (-0.3,2.4)
     ax2.set(xlim=xlim)
