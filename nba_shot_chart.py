@@ -98,7 +98,8 @@ with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['SHOT_PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
-    game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), index=0)
+    game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), 
+                             index=0, format_func=lambda x: x.strftime('%-m/%-d/%y'))
 
 def shot_summary(player_id,game_date=game_date):
     line_outline='w'
