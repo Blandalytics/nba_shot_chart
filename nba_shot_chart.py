@@ -10,6 +10,7 @@ import os
 
 from matplotlib.gridspec import GridSpec
 from nba_api.stats.endpoints import shotchartdetail
+from nba_api.stats.static import players
 from scipy.stats import gaussian_kde
 
 ## Set Styling
@@ -37,6 +38,8 @@ sns.set_theme(
         'text.color': pl_white
      },
     )
+
+nba_players = players.get_active_players()
 
 st.set_page_config(page_title='NBA Shot Chart', page_icon='🏀')
 st.title('NBA Shot Chart')
@@ -88,7 +91,7 @@ def load_season(year='2025-26'):
                  (blank_df['LOC_X'].abs().sub(30)>blank_df['LOC_Y'].abs().sub(center_hoop).mul(1.5)))]
         .copy()
     )
-    return season_df, background_data
+    return season_df.loc[season_df['PLAYER_ID'].isin([x['id'] for x in nba_players]], background_data
 
 # year = st.selectbox('Select a Season:',['2025-26','2024-25','2023-24','2022-23'], index=0)
 
