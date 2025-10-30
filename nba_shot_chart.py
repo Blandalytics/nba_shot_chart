@@ -34,6 +34,11 @@ sns.set_theme(
      },
     )
 
+st.set_page_config(page_title='NBA Shot Chart', page_icon='🏀')
+st.title('NBA Shot Chart')
+st.write("NBA players earn points by a combination of taking many shots, taking quality shots, and finishing those shots. This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and what the quality of their shot selection is. The expected FG% model was trained on 2022-23, 2023-24, and 2024-25 data.")
+st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
+
 # get_players returns a list of dictionaries, each representing a player.
 nba_players = players.get_active_players()
 
@@ -83,7 +88,7 @@ def load_season(year='2025-26'):
     )
     return season_df, background_data
 
-# year = st.selectbox('Select a Season:',['2025-2026','2024-2025','2023-2024','2022-2023'], index=0)
+# year = st.selectbox('Select a Season:',['2025-26','2024-25','2023-24','2022-23'], index=0)
 
 season_df, background_data = load_season()
 
@@ -92,7 +97,7 @@ with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['SHOT_PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
-    game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique())
+    game_text = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique())
     recent_game = season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].max()
 
 def shot_summary(player_id,game_date=game_date):
