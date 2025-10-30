@@ -91,7 +91,7 @@ def load_season(year='2025-26'):
                  (blank_df['LOC_X'].abs().sub(30)>blank_df['LOC_Y'].abs().sub(center_hoop).mul(1.5)))]
         .copy()
     )
-    return season_df.loc[season_df['PLAYER_ID'].isin([x['id'] for x in nba_players]], background_data
+    return season_df.loc[season_df['PLAYER_ID'].isin([x['id'] for x in nba_players])], background_data
 
 # year = st.selectbox('Select a Season:',['2025-26','2024-25','2023-24','2022-23'], index=0)
 
