@@ -323,9 +323,9 @@ st.dataframe(
     .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
             quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
             finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
-    .rename({
+    .rename(columns={
         'PLAYER_NAME':'Player',
-        'SHOT_PTS':'Pts',
+        'SHOT_PTS':'Points',
         'volume_points':'Volume Pts',
         'quality_points':'Quality Pts',
         'finishing_points':'Finishing Pts'
