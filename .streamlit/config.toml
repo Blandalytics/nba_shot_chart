@@ -2,4 +2,5 @@
 enableStaticServing = true
 
 [theme]
+base = 'dark'
 font = "Arimo:https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap"
