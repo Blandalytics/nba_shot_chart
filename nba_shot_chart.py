@@ -319,7 +319,7 @@ shot_summary(player_id)
 
 per_shot = st.toggle('Calculate stats per-shot? (Min 50 shot attempts)')
 if per_shot:
-    st.dataframe(
+    attempt_df = (
         season_df
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= 50]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
@@ -340,7 +340,7 @@ if per_shot:
         .sort_values('Points',ascending=False)
     )
 else:
-    st.dataframe(
+    attempt_df = (
         season_df
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
@@ -359,3 +359,4 @@ else:
         .round(1)
         .sort_values('Points',ascending=False)
     )
+st.dataframe(attempt_df)
