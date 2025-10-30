@@ -353,7 +353,7 @@ if per_shot:
             'quality_points':'Quality Pts',
             'finishing_points':'Finishing Pts'
         })
-        .groupby('Player')
+        .groupby(['Player','Date'])
         [['Points','Volume Pts','Quality Pts','Finishing Pts']]
         .mean()
         .round(2)
@@ -374,7 +374,7 @@ else:
             'quality_points':'Quality Pts',
             'finishing_points':'Finishing Pts'
         })
-        .groupby(['Player','Date'])
+        .groupby('Player')
         [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
         .sum()
         .round(1)
