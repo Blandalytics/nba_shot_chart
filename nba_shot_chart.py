@@ -97,7 +97,7 @@ with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['SHOT_PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
-    game_text = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique())
+    game_text = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()))
     recent_game = season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].max()
 
 def shot_summary(player_id,game_date=game_date):
