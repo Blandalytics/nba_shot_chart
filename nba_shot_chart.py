@@ -402,4 +402,4 @@ else:
         .sort_values('Points',ascending=False)
     )
 st.dataframe(attempt_df)
-st.dataframe(game_df_df)
+st.dataframe(game_df)
