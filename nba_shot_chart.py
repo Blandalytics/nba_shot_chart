@@ -10,7 +10,6 @@ import os
 
 from matplotlib.gridspec import GridSpec
 from nba_api.stats.endpoints import shotchartdetail
-from nba_api.stats.static import players
 from scipy.stats import gaussian_kde
 
 ## Set Styling
@@ -44,9 +43,6 @@ st.title('NBA Shot Chart')
 st.write("NBA players earn points by a combination of taking many shots, taking quality shots, and finishing those shots. This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and what the quality of their shot selection is.")
 st.write("The expected FG% model was trained on 2022-23, 2023-24, and 2024-25 data. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv)")
 st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
-
-# get_players returns a list of dictionaries, each representing a player.
-nba_players = players.get_active_players()
 
 @st.cache_data(ttl=1200,show_spinner=f"Loading data")
 def load_season(year='2025-26'):
