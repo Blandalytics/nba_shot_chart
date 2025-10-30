@@ -5,6 +5,8 @@ import seaborn as sns
 import matplotlib as mpl
 import matplotlib.colors as colors
 import matplotlib.pyplot as plt
+import matplotlib.font_manager as fm
+import os
 
 from matplotlib.gridspec import GridSpec
 from nba_api.stats.endpoints import shotchartdetail
@@ -18,7 +20,10 @@ pl_background = '#162B50'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-sns.set(font='https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400..700;1,400..700&display=swap')
+fpath = os.path.join(os.getcwd(), "Arimo/Arimo-Regular.ttf")
+prop = fm.FontProperties(fname=fpath)
+
+sns.set(font='Arimo')
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
