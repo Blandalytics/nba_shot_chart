@@ -347,6 +347,7 @@ if per_shot:
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
         .rename(columns={
             'PLAYER_NAME':'Player',
+            'GAME_DATE':'Date',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
@@ -367,7 +368,6 @@ else:
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
         .rename(columns={
             'PLAYER_NAME':'Player',
-            'GAME_DATE':'Date',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
