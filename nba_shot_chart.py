@@ -317,11 +317,31 @@ def shot_summary(player_id,game_date=game_date):
 
 shot_summary(player_id)
 
-per_shot = st.toggle('Calculate stats per-shot? (Min 50 shot attempts)')
+per_shot = st.toggle('Calculate stats per-shot? (Min 50 shot attempts in season / 5 in game)')
 if per_shot:
     attempt_df = (
         season_df
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= 50]
+        .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
+                quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
+                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+        .rename(columns={
+            'PLAYER_NAME':'Player',
+            'SHOT_ATTEMPTED_FLAG':'Shots',
+            'SHOT_PTS':'Points',
+            'volume_points':'Volume Pts',
+            'quality_points':'Quality Pts',
+            'finishing_points':'Finishing Pts'
+        })
+        .groupby('Player')
+        [['Points','Volume Pts','Quality Pts','Finishing Pts']]
+        .mean()
+        .round(2)
+        .sort_values('Points',ascending=False)
+    )
+    game_df = (
+        season_df
+        .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_DATE']]).transform('sum') >= 5]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
@@ -347,16 +367,39 @@ else:
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
         .rename(columns={
             'PLAYER_NAME':'Player',
+            'GAME_DATE':'Date',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
             'finishing_points':'Finishing Pts'
         })
-        .groupby('Player')
+        .groupby(['Player','Date'])
         [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
         .sum()
         .round(1)
         .sort_values('Points',ascending=False)
     )
+    
+    game_df = (
+        season_df
+        .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
+                quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
+                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+        .rename(columns={
+            'PLAYER_NAME':'Player',
+            'GAME_DATE':'Date',
+            'SHOT_ATTEMPTED_FLAG':'Shots',
+            'SHOT_PTS':'Points',
+            'volume_points':'Volume Pts',
+            'quality_points':'Quality Pts',
+            'finishing_points':'Finishing Pts'
+        })
+        .groupby(['Player','Date'])
+        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
+        .sum()
+        .round(2)
+        .sort_values('Points',ascending=False)
+    )
 st.dataframe(attempt_df)
+st.dataframe(game_df_df)
