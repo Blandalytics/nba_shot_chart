@@ -228,7 +228,7 @@ def shot_summary(player_id,game_date=game_date):
     ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
-                      ax=ax1, label='',shrink=0.9875, panchor=(0.5,0),
+                      ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
                      pad=0)
     cb.outline.set_color('white')
     cb.outline.set_linewidth(1.5)
