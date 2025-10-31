@@ -175,7 +175,7 @@ def shot_summary(player_id,game_date=game_date):
                     edgecolor='purple',
                     s=125,
                     legend=False,
-                    zorder=11,
+                    zorder=12,
                     ax=ax1
                    )
     
@@ -188,7 +188,7 @@ def shot_summary(player_id,game_date=game_date):
                     edgecolor='w',
                     s=125,
                     legend=False,
-                    zorder=11,
+                    zorder=12,
                     ax=ax1
                    )
     
