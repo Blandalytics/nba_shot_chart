@@ -373,8 +373,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].sum()),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].sum()))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
@@ -388,16 +388,7 @@ else:
         })
         .groupby('Player')
         [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
-        .agg({
-            'Shots':'sum',
-            'Volume Pts':'sum',
-            'Quality Pts':'sum',
-            'Finishing Pts':'sum',
-            'Shot Pts':'sum',
-            'FT Attempt Pts':'mean',
-            'FT Make Pts':'mean',
-            'FT Pts':'mean'
-        })
+        .sum()
         .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))
         [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
@@ -412,10 +403,11 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].sum()),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985).div(x['FTA'].sum())))
         .rename(columns={
             'PLAYER_NAME':'Player',
+            'SHOT_ATTEMPTED_FLAG':'Shots',
             'GAME_DATE':'Date',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
@@ -428,16 +420,7 @@ else:
         })
         .groupby(['Player','Date'])
         [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
-        .agg({
-            'Shots':'sum',
-            'Volume Pts':'sum',
-            'Quality Pts':'sum',
-            'Finishing Pts':'sum',
-            'Shot Pts':'sum',
-            'FT Attempt Pts':'mean',
-            'FT Make Pts':'mean',
-            'FT Pts':'mean'
-        })
+        .sum()
         .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
         [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
