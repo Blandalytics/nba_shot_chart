@@ -373,8 +373,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby(x['PLAYER_ID']).transform('mean')),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].groupby(x['PLAYER_ID']).transform('mean')),
+                fta_points = lambda x: x['FTA'].div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')).mul(190241 / 245985),
+                ftm_points = lambda x: x['FTM'].div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')).sub(x['FTA'].mul(190241 / 245985)),
                 ft_points = lambda x: x['FTM'].div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')))
         .rename(columns={
             'PLAYER_NAME':'Player',
