@@ -94,7 +94,7 @@ def load_season(year='2025-26'):
     season_df['FTM'] = season_df['FTM'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
     season_df['FTA'] = season_df['FTA'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
 
-    season_df['GAME_PLAYED'] = 1 / season_df['SHOT_ATTEMTPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count')
+    season_df['GAME_PLAYED'] = 1 / season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count')
     season_df['PTS'] = season_df[['SHOT_PTS','FTM']].sum(axis=1)
     
     center_hoop = 12.5
