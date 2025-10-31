@@ -331,14 +331,15 @@ shot_summary(player_id)
 col1, col2, col3 = st.columns(3)
 with col1:
     per_shot = st.toggle('Calculate stats per-shot?')
-if per_shot:
-    with col_2:
+with col_2:
+    if per_shot:
         season_thresh = st.slider('Min shot attempts in season',
                   min_value=1,
                   max_value=season_df.groupby('PLAYER_ID')['SHOT_ATTEMPTED_FLAG'].sum().max(),
                   value=50
                  )
-    with col3:
+with col3:
+    if per_shot:
         game_thresh = st.slider('Min shot attempts in game',
                   min_value=1,
                   max_value=season_df.groupby(['PLAYER_ID','GAME_ID'])['SHOT_ATTEMPTED_FLAG'].sum().max(),
