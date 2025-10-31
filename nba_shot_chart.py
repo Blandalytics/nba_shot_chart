@@ -9,6 +9,7 @@ import matplotlib.font_manager as fm
 import os
 
 from matplotlib.gridspec import GridSpec
+from nba_api.stats.endpoints import PlayerGameLogs
 from nba_api.stats.endpoints import shotchartdetail
 from nba_api.stats.static import players
 from scipy.stats import gaussian_kde
@@ -81,6 +82,15 @@ def load_season(year='2025-26'):
         '3PT Field Goal':3,
         '2PT Field Goal':2
     }))
+
+    ft_df = PlayerGameLogs(
+        season_nullable = year, # change year(s) if needed
+        season_type_nullable = 'Regular Season' # Regular Season, Playoffs, Pre Season
+        )
+    ft_df = ft_df.get_data_frames()[0]
+    season_df = season_df.merge(ft_df[['PLAYER_ID','GAME_ID','FTM', 'FTA']],
+                                how='left',on=['PLAYER_ID','GAME_ID'])
+    season_df[['FTM', 'FTA']] = season_df[['FTM', 'FTA']].fillna(0)
     
     center_hoop = 12.5
     background_data = (
@@ -117,6 +127,7 @@ def shot_summary(player_id,game_date=game_date):
     y_adj = backboard_depth+center_hoop
 
     pts_per_shot = 1.09
+    pts_per_ft = 190241 / 245985 # 2022-23 to 2024-25 avg
     
     hue_norm = colors.CenteredNorm(pts_per_shot,0.4)
      
@@ -251,10 +262,13 @@ def shot_summary(player_id,game_date=game_date):
     volume_points = game_data['SHOT_ATTEMPTED_FLAG'].sum() * pts_per_shot
     quality_points = game_data['xPTS'].sub(pts_per_shot).sum()
     finishing_points = game_data['SHOT_PTS'].sub(game_data['xPTS']).sum()
-    total_points = int(round(volume_points + quality_points + finishing_points,0))
     
-    categories = ['Volume','Quality','Finishing']
-    values = [volume_points,quality_points,finishing_points]
+    fta_points = game_data['FTA'].mean() * pts_per_ft
+    ftm_points = game_data['FTM'].mean() - fta_points
+    total_points = int(round(volume_points + quality_points + finishing_points + fta_points + ftm_points,0))
+    
+    categories = ['Shot\nVolume','Shot\nQuality','Shot\nFinishing','FT\nAttempts','FT\nMakes']
+    values = [volume_points,quality_points,finishing_points,fta_points,ftm_points]
     cumulative_values = np.cumsum(values)
     max_val = max(cumulative_values)
     
@@ -271,36 +285,30 @@ def shot_summary(player_id,game_date=game_date):
             edgecolor=color,
             width=0.8
         )
-        ax2.text(categories[i],max_val*1.07,f'{categories[i]:}',
+        ax2.text(categories[i],max_val*1.0675,f'{categories[i]:}',
                  fontsize=11,
-                ha='center',va='center',color='w',fontproperties=prop)
+                ha='center',va='center',color='w')
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
                  fontsize=12,
-                ha='center',va='center',color=color,fontweight='bold',fontproperties=prop,
+                ha='center',va='center',color=color,fontweight='bold',
                 bbox=dict(boxstyle='round', fc='w', ec=color))
         
-    xlim = (-0.3,2.4)
+    xlim = (-1/(len(categories)-1),len(categories)-1+2/(len(categories)))
     ax2.set(xlim=xlim)
     x_width = xlim[1] - xlim[0]
-    ax2.plot([0.03+(x_width/3+0.2) / x_width,
-             (2*x_width/3-0.2) / x_width],
-            [cumulative_values[0],cumulative_values[0]],
-             linestyle=(0, (1, 1)),
-            color='w')
-    ax2.plot([1.02+(x_width/3+0.2) / x_width,
-             0.99+(2*x_width/3-0.225) / x_width],
-            [cumulative_values[1],
-             cumulative_values[1]],
-             linestyle=(0, (1, 1)),
-            color='w')
+    for i in range(len(cumulative_values)):
+        ax2.plot([i+0.02+(x_width/3+0.2) / x_width,
+                 i-0.02 + (2*x_width/3-0.2) / x_width],
+                [cumulative_values[i],cumulative_values[i]],
+                 linestyle=(0, (1, 1)),
+                color='w')
     points_scored = int(round(sum(values),0))
     # ax.text(xlim[1]*1.025,cumulative_values[-1],f'{points_scored}pts',color='w',ha='left',va='center')
     ax2.tick_params(axis='both', which='both',length=0)
-    ax2.axhline(int(round(sum(values),0)),color='w',
-                xmin=xlim[0]+0.4,
-               xmax=(xlim[1] + 0.45) / x_width)
-    ax2.text(1,max_val*1.13,f'{points_scored} Points Scored',ha='center',fontsize=18,fontproperties=prop)
-    # ax2.yaxis.set_visible(False)
+    ax2.axhline(points_scored,color='w',
+                xmin=xlim[0]+0.31,
+                xmax=(xlim[1]+0.4) / x_width)
+    ax2.text(2,max_val*1.13,f'{points_scored} Points Scored',ha='center',fontsize=18)
     ax2.axis('off')
     ax2.set(xlim=(xlim[0]-0.4,xlim[1]))
     ax2.set_ylim([0,max_val*1.15])
@@ -364,18 +372,37 @@ else:
         season_df
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985)),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
-            'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts'
+            'finishing_points':'Finishing Pts',
+            'SHOT_PTS':'Shot Points',
+            'fta_points':'FT Attempt Pts',
+            'finishing_points':'FT Make Pts',
+            'FTM':'FT Pts'
         })
         .groupby('Player')
-        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
-        .sum()
+        [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        .agg({
+            'Shots':'sum',
+            'Volume Pts':'sum',
+            'Quality Pts':'sum',
+            'Finishing Pts':'sum',
+            'Shot Pts':'sum',
+            'FT Attempt Pts':'mean',
+            'FT Make Pts':'mean',
+            'FT Pts':'mean'
+        })
+        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
+        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
+        .astype({
+            'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
+        })
         .round(1)
         .sort_values('Points',ascending=False)
     )
@@ -384,19 +411,38 @@ else:
         season_df
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985)),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'GAME_DATE':'Date',
-            'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts'
+            'finishing_points':'Finishing Pts',
+            'SHOT_PTS':'Shot Points',
+            'fta_points':'FT Attempt Pts',
+            'finishing_points':'FT Make Pts',
+            'FTM':'FT Pts'
         })
         .groupby(['Player','Date'])
-        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts']]
-        .sum()
+        [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        .agg({
+            'Shots':'sum',
+            'Volume Pts':'sum',
+            'Quality Pts':'sum',
+            'Finishing Pts':'sum',
+            'Shot Pts':'sum',
+            'FT Attempt Pts':'mean',
+            'FT Make Pts':'mean',
+            'FT Pts':'mean'
+        })
+        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
+        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
+        .astype({
+            'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
+        })
         .round(2)
         .sort_values('Points',ascending=False)
     )
