@@ -44,7 +44,7 @@ nba_players = players.get_active_players()
 
 st.set_page_config(page_title='NBA Shot Chart', page_icon='🏀')
 st.title('NBA Shot Chart')
-st.write("NBA players earn points through a combination of taking shots, taking quality shots, and finishing those shots (plus free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection.")
+st.write("NBA players earn points through a combination of taking shots (and free throws), taking quality shots, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection.")
 st.write("The expected FG% model was trained on 2022-23, 2023-24, and 2024-25 data. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv).")
 st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
 
@@ -268,7 +268,7 @@ def shot_summary(player_id,game_date=game_date):
     ftm_points = game_data['FTM'].sum() - fta_points
     total_points = int(round(volume_points + quality_points + finishing_points + fta_points + ftm_points,0))
     
-    categories = ['Shot\nVolume','Shot\nQuality','Shot\nFinishing','FT\nAttempts','FT\nMakes']
+    categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','FT\nAttempts','FT\nMakes']
     values = [volume_points,quality_points,finishing_points,fta_points,ftm_points]
     cumulative_values = np.cumsum(values)
     max_val = max(cumulative_values)
