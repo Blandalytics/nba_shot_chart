@@ -373,7 +373,7 @@ else:
         season_df
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
                 fta_points = lambda x: x['FTA'].mul(pts_per_ft),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(pts_per_ft)))
         .rename(columns={
@@ -381,17 +381,17 @@ else:
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts',
+            'making_points':'Make Pts',
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts'
         })
         .groupby('Player')
-        [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
         .sum()
         .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))
-        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
+        [['Shots','Points','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
             'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
         })
@@ -403,7 +403,7 @@ else:
         season_df
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
                 fta_points = lambda x: x['FTA'].mul(pts_per_ft),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(pts_per_ft)))
         .rename(columns={
@@ -413,17 +413,17 @@ else:
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts',
+            'making_points':'Make Pts',
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts'
         })
         .groupby(['Player','Date'])
-        [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
         .sum()
         .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
-        [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
+        [['Shots','Points','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
             'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
         })
