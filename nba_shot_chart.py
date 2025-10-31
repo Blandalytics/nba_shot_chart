@@ -156,7 +156,7 @@ def shot_summary(player_id,game_date=game_date):
     sns.scatterplot(game_data.loc[(game_data['SHOT_MADE_FLAG']==0)],
                     x='LOC_X',
                     y='LOC_Y',
-                    color='w',
+                    color='None',
                     marker='X',
                     linewidth=1,
                     edgecolor='purple',
