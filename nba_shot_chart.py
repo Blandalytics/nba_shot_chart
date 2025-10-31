@@ -74,8 +74,9 @@ def load_season(year='2025-26'):
     blank_df['SHOT_DISTANCE_calc'] = (blank_df['LOC_X'].abs()**2 + blank_df['LOC_Y'].abs()**2) ** 0.5 / 10
     
     season_df[['xFG%','xPTS']] = season_df[['LOC_X','LOC_Y']].merge(blank_df,
-                                                                                    how='left',
-                                                                                    on=['LOC_X','LOC_Y'])[['xFG%','xPTS']]
+                                                                    how='left',
+                                                                    on=['LOC_X','LOC_Y'])[['xFG%','xPTS']]
+    season_df['LOC_X'] = season_df['LOC_X'].mul(-1) # Axis is flipped
     
     season_df['xFG%_avg'] = season_df['SHOT_MADE_FLAG'].groupby([season_df['SHOT_DISTANCE'],season_df['SHOT_TYPE'],season_df['last_5_sec']]).transform('mean')
     season_df['xPTS_avg'] = season_df['xFG%_avg'].mul(season_df['SHOT_TYPE'].map({
