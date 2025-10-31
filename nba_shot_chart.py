@@ -331,7 +331,8 @@ shot_summary(player_id)
 col1, col2, col3 = st.columns(3)
 with col1:
     per_shot = st.toggle('Calculate stats per-shot?')
-with col_2:
+    
+with col2:
     if per_shot:
         season_thresh = st.slider('Min shot attempts in season',
                   min_value=1,
