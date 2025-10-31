@@ -383,7 +383,7 @@ else:
             'finishing_points':'Finishing Pts',
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
-            'finishing_points':'FT Make Pts',
+            'ftm_points':'FT Make Pts',
             'FTM':'FT Pts'
         })
         .groupby('Player')
@@ -423,7 +423,7 @@ else:
             'finishing_points':'Finishing Pts',
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
-            'finishing_points':'FT Make Pts',
+            'ftm_points':'FT Make Pts',
             'FTM':'FT Pts'
         })
         .groupby(['Player','Date'])
