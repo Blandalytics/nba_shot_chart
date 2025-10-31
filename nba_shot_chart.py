@@ -399,7 +399,7 @@ else:
             'G':'int','FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
         })
         .round(1)
-        .sort_values('Points',ascending=False)
+        .sort_values('Pts',ascending=False)
     )
     
     game_df = (
@@ -430,7 +430,7 @@ else:
             'FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
         })
         .round(2)
-        .sort_values('Points',ascending=False)
+        .sort_values('Pts',ascending=False)
     )
 st.write('Season Leaderboard:')
 st.dataframe(attempt_df)
