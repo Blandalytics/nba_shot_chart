@@ -374,7 +374,8 @@ else:
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
                 fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')))
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')),
+                ft_points = lambda x: x['FTM'].div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
@@ -384,7 +385,7 @@ else:
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
-            'FTM':'FT Pts'
+            'ft_points':'FT Pts'
         })
         .groupby('Player')
         [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
@@ -404,7 +405,8 @@ else:
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
                 fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean'))))
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean'))),
+                ft_points = lambda x: x['FTM'].div(x['FTA'].groupby([x['PLAYER_ID'],x['GAME_ID']]).transform('mean')))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
@@ -416,7 +418,7 @@ else:
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
-            'FTM':'FT Pts'
+            'ft_points':'FT Pts'
         })
         .groupby(['Player','Date'])
         [['Shots','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
