@@ -373,7 +373,7 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985)),
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
         .rename(columns={
             'PLAYER_NAME':'Player',
@@ -398,7 +398,7 @@ else:
             'FT Make Pts':'mean',
             'FT Pts':'mean'
         })
-        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
+        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))
         [['Shots','Points','Volume Pts','Quality Pts','Finishing Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
             'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
@@ -412,7 +412,7 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985)),
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)))
         .rename(columns={
             'PLAYER_NAME':'Player',
