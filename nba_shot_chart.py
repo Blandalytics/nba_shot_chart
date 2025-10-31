@@ -91,8 +91,8 @@ def load_season(year='2025-26'):
     season_df = season_df.merge(ft_df[['PLAYER_ID','GAME_ID','FTM', 'FTA']],
                                 how='left',on=['PLAYER_ID','GAME_ID'])
     season_df[['FTM', 'FTA']] = season_df[['FTM', 'FTA']].fillna(0)
-    season_df['FTM'] = season_df['FTM'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('mean')
-    season_df['FTA'] = season_df['FTA'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('mean')
+    season_df['FTM'] = season_df['FTM'].div(season_df['SHOT_ATTEMPT_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
+    season_df['FTA'] = season_df['FTA'].div(season_df['SHOT_ATTEMPT_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('mean'))
     
     center_hoop = 12.5
     background_data = (
@@ -264,8 +264,8 @@ def shot_summary(player_id,game_date=game_date):
     quality_points = game_data['xPTS'].sub(pts_per_shot).sum()
     finishing_points = game_data['SHOT_PTS'].sub(game_data['xPTS']).sum()
     
-    fta_points = game_data['FTA'].mean() * pts_per_ft
-    ftm_points = game_data['FTM'].mean() - fta_points
+    fta_points = game_data['FTA'].sum() * pts_per_ft
+    ftm_points = game_data['FTM'].sum() - fta_points
     total_points = int(round(volume_points + quality_points + finishing_points + fta_points + ftm_points,0))
     
     categories = ['Shot\nVolume','Shot\nQuality','Shot\nFinishing','FT\nAttempts','FT\nMakes']
