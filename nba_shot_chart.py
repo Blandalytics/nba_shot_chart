@@ -332,17 +332,17 @@ if per_shot:
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= 50]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts'
+            'making_points':'Make Pts'
         })
         .groupby('Player')
-        [['Points','Volume Pts','Quality Pts','Finishing Pts']]
+        [['Points','Volume Pts','Quality Pts','Make Pts']]
         .mean()
         .round(2)
         .sort_values('Points',ascending=False)
@@ -352,7 +352,7 @@ if per_shot:
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_DATE']]).transform('sum') >= 5]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'GAME_DATE':'Date',
@@ -360,10 +360,10 @@ if per_shot:
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'finishing_points':'Finishing Pts'
+            'making_points':'Make Pts'
         })
         .groupby(['Player','Date'])
-        [['Points','Volume Pts','Quality Pts','Finishing Pts']]
+        [['Points','Volume Pts','Quality Pts','Make Pts']]
         .mean()
         .round(2)
         .sort_values('Points',ascending=False)
