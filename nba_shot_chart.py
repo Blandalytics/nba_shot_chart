@@ -94,6 +94,7 @@ def load_season(year='2025-26'):
     season_df['FTM'] = season_df['FTM'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
     season_df['FTA'] = season_df['FTA'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
 
+    season_df['GAME_PLAYED'] = 1 / season_df['SHOT_ATTEMTPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count')
     season_df['PTS'] = season_df[['SHOT_PTS','FTM']].sum(axis=1)
     
     center_hoop = 12.5
@@ -380,21 +381,22 @@ else:
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(pts_per_ft)))
         .rename(columns={
             'PLAYER_NAME':'Player',
-            'SHOT_ATTEMPTED_FLAG':'Shots',
-            'volume_points':'Volume Pts',
-            'quality_points':'Quality Pts',
+            'GAME_PLAYED':'G',
+            'SHOT_ATTEMPTED_FLAG':'FGA',
+            'volume_points':'Vol Pts',
+            'quality_points':'Qual Pts',
             'making_points':'Make Pts',
-            'SHOT_PTS':'Shot Pts',
-            'fta_points':'FT Attempt Pts',
+            'SHOT_PTS':'FG Pts',
+            'fta_points':'FTA Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts',
-            'PTS':'Points',
+            'PTS':'Pts',
         })
         .groupby('Player')
-        [['Points','Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['G','Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','FTA Pts','FT Make Pts','FT Pts']]
         .sum()
         .astype({
-            'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
+            'G':'int','FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
         })
         .round(1)
         .sort_values('Points',ascending=False)
@@ -411,19 +413,22 @@ else:
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'GAME_DATE':'Date',
-            'SHOT_PTS':'Points',
-            'volume_points':'Volume Pts',
-            'quality_points':'Quality Pts',
+            'SHOT_ATTEMPTED_FLAG':'FGA',
+            'volume_points':'Vol Pts',
+            'quality_points':'Qual Pts',
             'making_points':'Make Pts',
-            'SHOT_PTS':'Shot Pts',
-            'fta_points':'FT Attempt Pts',
+            'SHOT_PTS':'FG Pts',
+            'fta_points':'FTA Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts',
-            'PTS':'Points',
+            'PTS':'Pts',
         })
         .groupby(['Player','Date'])
-        [['Points','Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','FTA Pts','FT Make Pts','FT Pts']]
         .sum()
+        .astype({
+            'FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
+        })
         .round(2)
         .sort_values('Points',ascending=False)
     )
