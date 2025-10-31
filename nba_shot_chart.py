@@ -373,8 +373,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].sum()),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].sum()))
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby(x['PLAYER_ID']).transform('sum')),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985)).div(x['FTA'].groupby(x['PLAYER_ID']).transform('sum')))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
@@ -403,8 +403,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(1.09),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(1.09)),
                 finishing_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].sum()),
-                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985).div(x['FTA'].sum())))
+                fta_points = lambda x: x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby(x['PLAYER_ID']).transform('sum')),
+                ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(190241 / 245985).div(x['FTA'].groupby(x['PLAYER_ID']).transform('sum'))))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
