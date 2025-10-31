@@ -133,9 +133,9 @@ def shot_summary(player_id,game_date=game_date):
      
     game_data = season_df.loc[(season_df['PLAYER_ID']==player_id) & (season_df['GAME_DATE']==game_date)]
     # chart_data = shot_chart_detail.loc[(shot_chart_detail['LOC_Y']<=y_lim) & (shot_chart_detail['last_5_sec']==0)].copy()
-    fig = plt.figure(figsize=(10.5,8))
+    fig = plt.figure(figsize=(13,8))
     gs = GridSpec(2, 2, figure=fig,
-                  width_ratios=[2.6,7.9],wspace=0.1,
+                  width_ratios=[5.1,7.9],wspace=0,
                   height_ratios=[7.7,0.3],hspace=0)
     
     ax1 = fig.add_subplot(gs[:, 1])
