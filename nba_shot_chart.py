@@ -328,11 +328,27 @@ def shot_summary(player_id,game_date=game_date):
 
 shot_summary(player_id)
 
-per_shot = st.toggle('Calculate stats per-shot? (Min 50 shot attempts in season / 5 in game)')
+col1, col2, col3 = st.columns(3)
+with col1:
+    per_shot = st.toggle('Calculate stats per-shot?')
+if per_shot:
+    with col_2:
+        season_thresh = st.slider('Min shot attempts in season',
+                  min_value=1,
+                  max_value=season_df.groupby('PLAYER_ID')['SHOT_ATTEMPTED_FLAG'].sum().max(),
+                  value=50
+                 )
+    with col3:
+        game_thresh = st.slider('Min shot attempts in game',
+                  min_value=1,
+                  max_value=season_df.groupby(['PLAYER_ID','GAME_ID'])['SHOT_ATTEMPTED_FLAG'].sum().max(),
+                  value=5
+                 )
+        
 if per_shot:
     attempt_df = (
         season_df
-        .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= 50]
+        .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= season_thresh]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
                 making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
@@ -352,7 +368,7 @@ if per_shot:
     )
     game_df = (
         season_df
-        .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_DATE']]).transform('sum') >= 5]
+        .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_DATE']]).transform('sum') >= game_thresh]
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
                 making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
