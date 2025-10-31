@@ -93,6 +93,8 @@ def load_season(year='2025-26'):
     season_df[['FTM', 'FTA']] = season_df[['FTM', 'FTA']].fillna(0)
     season_df['FTM'] = season_df['FTM'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
     season_df['FTA'] = season_df['FTA'].div(season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_ID']]).transform('count'))
+
+    season_df['PTS'] = season_df[['SHOT+PTS','FTM']].sum(axis=1)
     
     center_hoop = 12.5
     background_data = (
@@ -113,7 +115,7 @@ pts_per_ft = 190241 / 245985 # 2022-23 to 2024-25 avg
 
 col1, col2 = st.columns(2)
 with col1:
-    player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['SHOT_PTS'].sum().sort_values(ascending=False).index), index=0)
+    player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
     game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), 
@@ -385,13 +387,12 @@ else:
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
-            'FTM':'FT Pts'
+            'FTM':'FT Pts',
+            'PTS':'Points',
         })
         .groupby('Player')
-        [['Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['Points','Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
         .sum()
-        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))
-        [['Shots','Points','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
         .astype({
             'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
         })
@@ -417,16 +418,12 @@ else:
             'SHOT_PTS':'Shot Pts',
             'fta_points':'FT Attempt Pts',
             'ftm_points':'FT Make Pts',
-            'FTM':'FT Pts'
+            'FTM':'FT Pts',
+            'PTS':'Points',
         })
         .groupby(['Player','Date'])
-        [['Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
+        [['Points','Shots','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']]
         .sum()
-        .assign(Points = lambda x: x[['Shot Pts','FT Pts']].sum(axis=1).round(0))  
-        [['Shots','Points','Volume Pts','Quality Pts','Make Pts','Shot Pts','FT Attempt Pts','FT Make Pts','FT Pts']] 
-        .astype({
-            'Shots':'int','Points':'int','Shot Pts':'int','FT Pts':'int'
-        })
         .round(2)
         .sort_values('Points',ascending=False)
     )
