@@ -341,7 +341,9 @@ def shot_summary(player_id,game_date=game_date):
     sns.despine()
     st.pyplot(fig,width=600)
 
-shot_summary(player_id)
+pad1, col1, pad2 = st.columns([0.2,0.6,0.2)
+with col1:
+    shot_summary(player_id)
 
 col1, col2, col3 = st.columns(3)
 with col1:
