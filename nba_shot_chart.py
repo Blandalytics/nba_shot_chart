@@ -7,6 +7,7 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import os
+import time
 
 from matplotlib.gridspec import GridSpec
 from nba_api.stats.endpoints import PlayerGameLogs
@@ -48,7 +49,7 @@ st.write("NBA players earn points through a combination of taking shots (and fre
 st.write("The expected FG% model was trained on 2022-23, 2023-24, and 2024-25 data. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv).")
 st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
 
-@st.cache_data(ttl=1200,show_spinner=f"Loading data")
+@st.cache_data(ttl=1200,show_spinner=f"Loading shots")
 def load_season(year='2025-26'):
     season_df = shotchartdetail.ShotChartDetail(
         team_id = 0, # can input the id# but 0, will return all
@@ -625,14 +626,13 @@ team_colors = {
     }
 }
 
-def load_minutes(team_name,season='2025-26'):
-    team_id = team_map[team_name]
-    player_game_logs = PlayerGameLogs(
+@st.cache_data(ttl=1200,show_spinner=f"Loading minutes")
+def load_league_minutes(season='2025-26'):
+    df_player_game_logs = PlayerGameLogs(
         league_id_nullable ='00', # NBA
         season_nullable = season, # change year(s) if needed
         season_type_nullable = 'Regular Season' # Regular Season, Playoffs, Pre Season
-        )
-    df_player_game_logs = player_game_logs.get_data_frames()[0]
+        ).get_data_frames()[0]
 
     df_player_game_logs['short_date'] = pd.to_datetime(df_player_game_logs['GAME_DATE']).dt.strftime('%#b %#d')
 
@@ -643,6 +643,12 @@ def load_minutes(team_name,season='2025-26'):
     df_player_game_logs['Last 5'] = np.where(df_player_game_logs['team_game']<=5,df_player_game_logs['MIN'],None)
     df_player_game_logs['Last 10'] = np.where(df_player_game_logs['team_game']<=10,df_player_game_logs['MIN'],None)
 
+    return df_player_game_logs[['TEAM_ID','PLAYER_NAME','team_game','GAME_DATE','short_date','MIN','Last 3','Last 5','Last 10']]
+
+league_minutes = load_league_minutes()
+
+def team_minutes(team_name,df_player_game_logs=league_minutes):
+    team_id = team_map[team_name]
     last_5_df = pd.pivot_table(df_player_game_logs.loc[(df_player_game_logs['TEAM_ID']==team_id) & 
                                                        (df_player_game_logs['team_game']<=5)],
                                index=['PLAYER_NAME'],
@@ -659,58 +665,36 @@ def load_minutes(team_name,season='2025-26'):
         left_index=True,
         right_index=True).astype('float').round(1)
     team_df.index.name = None
-    return team_df
+    headers = {
+                'selector': 'th',
+                'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
+            }
+    return (
+        team_df
+        .style
+        .set_table_styles([headers])
+        .format('{:.1f}', na_rep="")
+    )
 
 st.title('Team Minutes Breakdown')
-team_select = st.toggle('Show tables for all teams?')
+all_teams = st.toggle('Show tables for all teams?')
 
-if team_select:
+if all_teams:
     col1, col2 = st.columns(2)
     with col1:
         st.header('Eastern Conference')
         for TEAM in list(team_colors.keys())[:15]:
             st.write(TEAM)
-            team_df = load_minutes(TEAM)
-            headers = {
-                'selector': 'th',
-                'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
-            }
-            st.dataframe(
-                team_df
-                .style
-                .set_table_styles([headers])
-                .format('{:.1f}', na_rep="")
-                
-            )
+            team_df = team_minutes(TEAM)
+            st.dataframe(team_df)
     with col2:
         st.header('Western Conference')
         for TEAM in list(team_colors.keys())[15:]:
             st.write(TEAM)
-            team_df = load_minutes(TEAM)
-            headers = {
-                'selector': 'th',
-                'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
-            }
-            st.dataframe(
-                team_df
-                .style
-                .set_table_styles([headers])
-                .format('{:.1f}', na_rep="")
-                
-            )
+            team_df = team_minutes(TEAM)
+            st.dataframe(team_df)
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
     st.write(TEAM)
     team_df = load_minutes(TEAM)
-    headers = {
-        'selector': 'th',
-        'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
-    }
-    
-    st.dataframe(
-        team_df
-        .style
-        .set_table_styles([headers])
-        .format('{:.1f}', na_rep="")
-        
-    )
+    st.dataframe(team_df)
