@@ -665,20 +665,39 @@ st.title('Team Minutes Breakdown')
 team_select = st.toggle('Show tables for all teams?')
 
 if team_select:
-    for TEAM in list(team_colors.keys()):
-        st.write(TEAM)
-        team_df = load_minutes(TEAM)
-        headers = {
-            'selector': 'th',
-            'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
-        }
-        st.dataframe(
-            team_df
-            .style
-            .set_table_styles([headers])
-            .format('{:.1f}', na_rep="")
-            
-        )
+    col1, col2: st.columns(2)
+    with col1:
+        st.Header('Eastern Conference')
+        for TEAM in list(team_colors.keys())[:15]:
+            st.write(TEAM)
+            team_df = load_minutes(TEAM)
+            headers = {
+                'selector': 'th',
+                'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
+            }
+            st.dataframe(
+                team_df
+                .style
+                .set_table_styles([headers])
+                .format('{:.1f}', na_rep="")
+                
+            )
+    with col2:
+        st.Header('Western Conference')
+        for TEAM in list(team_colors.keys())[15:]:
+            st.write(TEAM)
+            team_df = load_minutes(TEAM)
+            headers = {
+                'selector': 'th',
+                'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
+            }
+            st.dataframe(
+                team_df
+                .style
+                .set_table_styles([headers])
+                .format('{:.1f}', na_rep="")
+                
+            )
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
     st.write(TEAM)
