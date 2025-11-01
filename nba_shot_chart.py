@@ -625,13 +625,49 @@ team_colors = {
     }
 }
 
+def load_minutes(team_name,season='2025-26'):
+    team_id = team_map[team_name]
+    player_game_logs = PlayerGameLogs(
+        league_id_nullable ='00', # NBA
+        season_nullable = season, # change year(s) if needed
+        season_type_nullable = 'Regular Season' # Regular Season, Playoffs, Pre Season
+        )
+    df_player_game_logs = player_game_logs.get_data_frames()[0]
+
+    df_player_game_logs['short_date'] = pd.to_datetime(df_player_game_logs['GAME_DATE']).dt.strftime('%#b %#d')
+
+    df_player_game_logs['team_game']  = df_player_game_logs.groupby("TEAM_ID")["GAME_DATE"].rank(method="dense", ascending=False)
+    df_player_game_logs['player_game'] = df_player_game_logs.groupby("PLAYER_ID")["GAME_DATE"].rank(method="dense", ascending=False)
+
+    df_player_game_logs['Last 3'] = np.where(df_player_game_logs['team_game']<=3,df_player_game_logs['MIN'],None)
+    df_player_game_logs['Last 5'] = np.where(df_player_game_logs['team_game']<=5,df_player_game_logs['MIN'],None)
+    df_player_game_logs['Last 10'] = np.where(df_player_game_logs['team_game']<=10,df_player_game_logs['MIN'],None)
+
+    last_5_df = pd.pivot_table(df_player_game_logs.loc[(df_player_game_logs['TEAM_ID']==team_id) & 
+                                                       (df_player_game_logs['team_game']<=5)],
+                               index=['PLAYER_NAME'],
+                               values=['MIN'],
+                               columns=['GAME_DATE'])
+    last_5_df.columns = df_player_game_logs.loc[(df_player_game_logs['TEAM_ID']==team_id) & 
+                                                       (df_player_game_logs['team_game']<=5),
+                                                       'short_date'].unique()[::-1]
+
+    team_df = pd.merge(
+        df_player_game_logs.loc[df_player_game_logs['TEAM_ID']==team_id].groupby('PLAYER_NAME')[['Last 3','Last 5','Last 10','MIN']].mean().rename(columns={'MIN':'All'}).sort_values(['Last 3','Last 5','Last 10','All'],ascending=False),
+        last_5_df[[x for x in last_5_df.columns[::-1]]],
+        how='left',
+        left_index=True,
+        right_index=True).astype('float').round(1)
+    team_df.index.name = None
+    return team_df
+
 st.title('Team Minutes Breakdown')
 team_select = st.toggle('Show tables for all teams?')
 
 if team_select:
     for TEAM in list(team_colors.keys()):
         st.write(TEAM)
-        team_df = load_data(TEAM)
+        team_df = load_minutes(TEAM)
         headers = {
             'selector': 'th',
             'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
@@ -646,7 +682,7 @@ if team_select:
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
     st.write(TEAM)
-    team_df = load_data(TEAM)
+    team_df = load_minutes(TEAM)
     headers = {
         'selector': 'th',
         'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
