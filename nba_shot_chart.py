@@ -339,7 +339,7 @@ def shot_summary(player_id,game_date=game_date):
                  x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
     sns.despine()
-    st.pyplot(fig,width=750)
+    st.pyplot(fig,width='content')
 
 shot_summary(player_id)
 
