@@ -693,7 +693,7 @@ if all_teams:
             for division in range(3):
                 st.header(divisions['Eastern'][division])
                 for TEAM in list(team_colors.keys())[division*5:(division+1)*5]:
-                    st.write(TEAM)
+                    st.subheader(TEAM)
                     team_df = team_minutes(TEAM)
                     st.dataframe(team_df)
     with col2:
@@ -703,7 +703,7 @@ if all_teams:
             for division in range(3):
                 st.header(divisions['Western'][division])
                 for TEAM in list(team_colors.keys())[(division+3)*5:(division+4)*5]:
-                    st.write(TEAM)
+                    st.subheader(TEAM)
                     team_df = team_minutes(TEAM)
                     st.dataframe(team_df)
 else:
