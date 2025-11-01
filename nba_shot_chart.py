@@ -697,7 +697,7 @@ if all_teams:
     with col2:
         st.header('Western Conference')
         for division in range(3):
-            st.write(divisions['Western'][division])
+            st.header(divisions['Western'][division])
             for TEAM in list(team_colors.keys())[(division+3)*5:(division+4)*5]:
                 st.write(TEAM)
                 team_df = team_minutes(TEAM)
