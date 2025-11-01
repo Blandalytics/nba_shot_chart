@@ -708,6 +708,5 @@ if all_teams:
                     st.dataframe(team_df)
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
-    st.write(TEAM)
     team_df = team_minutes(TEAM)
     st.dataframe(team_df)
