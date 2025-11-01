@@ -665,7 +665,7 @@ st.title('Team Minutes Breakdown')
 team_select = st.toggle('Show tables for all teams?')
 
 if team_select:
-    col1, col2: st.columns(2)
+    col1, col2 = st.columns(2)
     with col1:
         st.Header('Eastern Conference')
         for TEAM in list(team_colors.keys())[:15]:
