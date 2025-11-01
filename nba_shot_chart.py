@@ -568,6 +568,10 @@ team_colors = {
         'background':'#0e2240',
         'text':'white'
     },
+    'Minnesota Timberwolves':{
+        'background':'#0c2340',
+        'text':'white'
+    },
     'Oklahoma City Thunder':{
         'background':'#007ac1',
         'text':'white'
@@ -578,10 +582,6 @@ team_colors = {
     },
     'Utah Jazz':{
         'background':'#002b5c',
-        'text':'white'
-    },
-    'Minnesota Timberwolves':{
-        'background':'#0c2340',
         'text':'white'
     },
     'Golden State Warriors':{
@@ -679,20 +679,29 @@ def team_minutes(team_name,df_player_game_logs=league_minutes):
 st.title('Team Minutes Breakdown')
 all_teams = st.toggle('Show tables for all teams?')
 
+divisions = {
+    'Eastern':['Atlantic','Central','Southeast'],
+    'Western':['Northwest','Pacific','Southwest'],
+}
+
 if all_teams:
     col1, col2 = st.columns(2)
     with col1:
         st.header('Eastern Conference')
-        for TEAM in list(team_colors.keys())[:15]:
-            st.write(TEAM)
-            team_df = team_minutes(TEAM)
-            st.dataframe(team_df)
+        for division in range(3):
+            st.write(divisions['Eastern'][division])
+            for TEAM in list(team_colors.keys())[division*5:(division+1)*5]:
+                st.write(TEAM)
+                team_df = team_minutes(TEAM)
+                st.dataframe(team_df)
     with col2:
         st.header('Western Conference')
-        for TEAM in list(team_colors.keys())[15:]:
-            st.write(TEAM)
-            team_df = team_minutes(TEAM)
-            st.dataframe(team_df)
+        for division in range(3):
+            st.write(divisions['Western'][division])
+            for TEAM in list(team_colors.keys())[(division+3)*5:(division+4)*5]:
+                st.write(TEAM)
+                team_df = team_minutes(TEAM)
+                st.dataframe(team_df)
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
     st.write(TEAM)
