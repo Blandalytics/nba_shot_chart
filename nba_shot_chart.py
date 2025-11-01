@@ -667,7 +667,7 @@ team_select = st.toggle('Show tables for all teams?')
 if team_select:
     col1, col2 = st.columns(2)
     with col1:
-        st.Header('Eastern Conference')
+        st.header('Eastern Conference')
         for TEAM in list(team_colors.keys())[:15]:
             st.write(TEAM)
             team_df = load_minutes(TEAM)
@@ -683,7 +683,7 @@ if team_select:
                 
             )
     with col2:
-        st.Header('Western Conference')
+        st.header('Western Conference')
         for TEAM in list(team_colors.keys())[15:]:
             st.write(TEAM)
             team_df = load_minutes(TEAM)
