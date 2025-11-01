@@ -465,10 +465,14 @@ else:
         .round(2)
         .sort_values('Pts',ascending=False)
     )
-st.header('Season Leaderboard')
-st.dataframe(attempt_df)
-st.header('Game Leaderboard')
-st.dataframe(game_df)
+
+col1, col2 = st.columns(2)
+with col1:
+    st.header('Season Leaderboard')
+    st.dataframe(attempt_df)
+with col2:
+    st.header('Game Leaderboard')
+    st.dataframe(game_df)
 
 team_map = {
  'Atlanta Hawks': 1610612737,
