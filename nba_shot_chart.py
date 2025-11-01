@@ -468,3 +468,194 @@ st.header('Season Leaderboard')
 st.dataframe(attempt_df)
 st.header('Game Leaderboard')
 st.dataframe(game_df)
+
+team_map = {
+ 'Atlanta Hawks': 1610612737,
+ 'Boston Celtics': 1610612738,
+ 'Brooklyn Nets': 1610612751,
+ 'Charlotte Hornets': 1610612766,
+ 'Chicago Bulls': 1610612741,
+ 'Cleveland Cavaliers': 1610612739,
+ 'Dallas Mavericks': 1610612742,
+ 'Denver Nuggets': 1610612743,
+ 'Detroit Pistons': 1610612765,
+ 'Golden State Warriors': 1610612744,
+ 'Houston Rockets': 1610612745,
+ 'Indiana Pacers': 1610612754,
+ 'LA Clippers': 1610612746,
+ 'Los Angeles Lakers': 1610612747,
+ 'Memphis Grizzlies': 1610612763,
+ 'Miami Heat': 1610612748,
+ 'Milwaukee Bucks': 1610612749,
+ 'Minnesota Timberwolves': 1610612750,
+ 'New Orleans Pelicans': 1610612740,
+ 'New York Knicks': 1610612752,
+ 'Oklahoma City Thunder': 1610612760,
+ 'Orlando Magic': 1610612753,
+ 'Philadelphia 76ers': 1610612755,
+ 'Phoenix Suns': 1610612756,
+ 'Portland Trail Blazers': 1610612757,
+ 'Sacramento Kings': 1610612758,
+ 'San Antonio Spurs': 1610612759,
+ 'Toronto Raptors': 1610612761,
+ 'Utah Jazz': 1610612762,
+ 'Washington Wizards': 1610612764
+}
+
+team_colors = {
+    'Boston Celtics':{
+        'background':'#007a33',
+        'text':'white'
+    },
+    'Brooklyn Nets':{
+        'background':'k',
+        'text':'white'
+    },
+    'New York Knicks':{
+        'background':'#f58426',
+        'text':'white'
+    },
+    'Philadelphia 76ers':{
+        'background':'#002b5c',
+        'text':'white'
+    },
+    'Toronto Raptors':{
+        'background':'#ce1141',
+        'text':'white'
+    },
+    'Chicago Bulls':{
+        'background':'#ce1141',
+        'text':'white'
+    },
+    'Cleveland Cavaliers':{
+        'background':'#860038',
+        'text':'white'
+    },
+    'Detroit Pistons':{
+        'background':'#c8102e',
+        'text':'white'
+    },
+    'Indiana Pacers':{
+        'background':'#002d62',
+        'text':'white'
+    },
+    'Milwaukee Bucks':{
+        'background':'#00471b',
+        'text':'white'
+    },
+    'Atlanta Hawks':{
+        'background':'#e03a3e',
+        'text':'white'
+    },
+    'Charlotte Hornets':{
+        'background':'#00788c',
+        'text':'white'
+    },
+    'Miami Heat':{
+        'background':'#98002e',
+        'text':'white'
+    },
+    'Orlando Magic':{
+        'background':'#0077c0',
+        'text':'white'
+    },
+    'Washington Wizards':{
+        'background':'#002b5c',
+        'text':'white'
+    },
+    'Denver Nuggets':{
+        'background':'#0e2240',
+        'text':'white'
+    },
+    'Oklahoma City Thunder':{
+        'background':'#007ac1',
+        'text':'white'
+    },
+    'Portland Trail Blazers':{
+        'background':'#e03a3e',
+        'text':'white'
+    },
+    'Utah Jazz':{
+        'background':'#002b5c',
+        'text':'white'
+    },
+    'Minnesota Timberwolves':{
+        'background':'#0c2340',
+        'text':'white'
+    },
+    'Golden State Warriors':{
+        'background':'#1d428a',
+        'text':'white'
+    },
+    'LA Clippers':{
+        'background':'#c8102e',
+        'text':'white'
+    },
+    'Los Angeles Lakers':{
+        'background':'#552583',
+        'text':'white'
+    },
+    'Phoenix Suns':{
+        'background':'#1d1160',
+        'text':'white'
+    },
+    'Sacramento Kings':{
+        'background':'#5a2d81',
+        'text':'white'
+    },
+    'Dallas Mavericks':{
+        'background':'#00538c',
+        'text':'white'
+    },
+    'Houston Rockets':{
+        'background':'#ce1141',
+        'text':'white'
+    },
+    'Memphis Grizzlies':{
+        'background':'#5d76a9',
+        'text':'white'
+    },
+    'New Orleans Pelicans':{
+        'background':'#0c2340',
+        'text':'white'
+    },
+    'San Antonio Spurs':{
+        'background':'#c4ced4',
+        'text':'#000000'
+    }
+}
+
+st.title('Team Minutes Breakdown')
+team_select = st.toggle('Show tables for all teams?')
+
+if team_select:
+    for TEAM in list(team_colors.keys()):
+        st.write(TEAM)
+        team_df = load_data(TEAM)
+        headers = {
+            'selector': 'th',
+            'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
+        }
+        st.dataframe(
+            team_df
+            .style
+            .set_table_styles([headers])
+            .format('{:.1f}', na_rep="")
+            
+        )
+else:
+    TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
+    st.write(TEAM)
+    team_df = load_data(TEAM)
+    headers = {
+        'selector': 'th',
+        'props': f'text-align: center; background-color: {team_colors[TEAM]['background']}; color: {team_colors[TEAM]['text']};'
+    }
+    
+    st.dataframe(
+        team_df
+        .style
+        .set_table_styles([headers])
+        .format('{:.1f}', na_rep="")
+        
+    )
