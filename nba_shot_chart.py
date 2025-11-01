@@ -688,20 +688,24 @@ if all_teams:
     col1, col2 = st.columns(2)
     with col1:
         st.header('Eastern Conference')
-        for division in range(3):
-            st.header(divisions['Eastern'][division])
-            for TEAM in list(team_colors.keys())[division*5:(division+1)*5]:
-                st.write(TEAM)
-                team_df = team_minutes(TEAM)
-                st.dataframe(team_df)
+        east = col1.container()
+        with east:
+            for division in range(3):
+                st.header(divisions['Eastern'][division])
+                for TEAM in list(team_colors.keys())[division*5:(division+1)*5]:
+                    st.write(TEAM)
+                    team_df = team_minutes(TEAM)
+                    st.dataframe(team_df)
     with col2:
         st.header('Western Conference')
-        for division in range(3):
-            st.header(divisions['Western'][division])
-            for TEAM in list(team_colors.keys())[(division+3)*5:(division+4)*5]:
-                st.write(TEAM)
-                team_df = team_minutes(TEAM)
-                st.dataframe(team_df)
+        west = col2.container()
+        with west:
+            for division in range(3):
+                st.header(divisions['Western'][division])
+                for TEAM in list(team_colors.keys())[(division+3)*5:(division+4)*5]:
+                    st.write(TEAM)
+                    team_df = team_minutes(TEAM)
+                    st.dataframe(team_df)
 else:
     TEAM = st.selectbox('Select a team',list(team_map.keys()), index=20)
     st.write(TEAM)
