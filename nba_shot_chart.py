@@ -116,7 +116,7 @@ season_df, background_data = load_season()
 pts_per_shot = 1.09
 pts_per_ft = 190241 / 245985 # 2022-23 to 2024-25 avg
 
-col1, col2 = st.columns(2)
+pad1, col1, col2, pad2 = st.columns([0.2,0.3,0.3,0.2])
 with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
