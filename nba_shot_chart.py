@@ -121,7 +121,7 @@ with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
-    col3, col4 = st.columns(2)
+    col3, col4 = st.columns([1/3,2/3])
     with col3:
         season_long = st.toggle('Season-long chart?')
     if not season_long:
