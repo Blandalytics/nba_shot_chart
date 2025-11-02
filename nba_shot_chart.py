@@ -302,14 +302,14 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        arrowstyle="-|>",
                                        edgecolor='w',
                                        shrinkA=2,shrinkB=0,
-                                       linewidth=10))
+                                       linewidth=6))
         cb.ax.annotate("", 
                        xytext=(np.clip(expected_points,0.69,1.51), 0.5), 
                        xy=(np.clip(actual_points+0.0015 if scored_more else actual_points-0.0015,0.691,1.509), 0.5),
                        zorder=10,
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>",
-                                       edgecolor=pl_background,linewidth=8))
+                                       edgecolor=pl_background,linewidth=4))
     ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
     ax2 = fig.add_subplot(gs[:,0])
