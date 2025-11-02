@@ -296,7 +296,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        arrowprops=dict(color='g' if actual_points >= expected_points else 'purple',
                                        arrowstyle="-|>",
                                        edgecolor='w',
-                                       mutation_scale=5))
+                                       mutation_scale=20))
         # cb.ax.arrow(expected_points,0.5,
         #             actual_points-expected_points,0,
         #             width=0.01,
