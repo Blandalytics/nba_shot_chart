@@ -121,10 +121,15 @@ with col1:
     player_name = st.selectbox('Select a player',list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index), index=0)
     player_id = [x['id'] for x in nba_players if x['full_name']==player_name][0]
 with col2:
-    game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), 
-                             index=0, format_func=lambda x: x.strftime('%-m/%-d/%y'))
+    col3, col4 = st.columns(2)
+    with col3:
+        season_long = st.toggle('Season-long chart?')
+    if not season_long:
+        with col4:
+            game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), 
+                                     index=0, format_func=lambda x: x.strftime('%-m/%-d/%y'))
 
-def shot_summary(player_id,game_date=game_date):
+def shot_summary(player_id,game_date=game_date, season_long=season_long):
     line_outline='w'
     line_color = 'k'
     
@@ -136,8 +141,11 @@ def shot_summary(player_id,game_date=game_date):
     y_adj = backboard_depth+center_hoop
 
     hue_norm = colors.CenteredNorm(pts_per_shot,0.4)
-     
-    game_data = season_df.loc[(season_df['PLAYER_ID']==player_id) & (season_df['GAME_DATE']==game_date)]
+
+    if season_long:
+        game_data = season_df.loc[(season_df['PLAYER_ID']==player_id)]
+    else:
+        game_data = season_df.loc[(season_df['PLAYER_ID']==player_id) & (season_df['GAME_DATE']==game_date)]
     # chart_data = shot_chart_detail.loc[(shot_chart_detail['LOC_Y']<=y_lim) & (shot_chart_detail['last_5_sec']==0)].copy()
     fig = plt.figure(figsize=(13,8))
     gs = GridSpec(2, 2, figure=fig,
@@ -308,7 +316,7 @@ def shot_summary(player_id,game_date=game_date):
                  fontsize=11,
                 ha='center',va='center',color='w')
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
-                 fontsize=12,
+                 fontsize=10 if season_long else 12,
                 ha='center',va='center',color=color,fontweight='bold',
                 bbox=dict(boxstyle='round', fc='w', ec=color))
         
@@ -334,9 +342,12 @@ def shot_summary(player_id,game_date=game_date):
     
     player_name = game_data['PLAYER_NAME'].iloc[0]
     date_text = game_date.strftime('%#m/%#d/%y')
-    
-    fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=24, 
-                 x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
+    if season_long:
+        fig.suptitle(f'Shot Summary: {player_name} (2025-26)\n',fontsize=24, 
+                     x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
+    else:
+        fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=24, 
+                     x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
     sns.despine()
     st.pyplot(fig,width='content')
