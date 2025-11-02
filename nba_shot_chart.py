@@ -286,7 +286,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
         cb.ax.set(xlabel='')
     cb.ax.axvline(expected_points,color='k',linewidth=2,zorder=11)
     cb.ax.axvline(actual_points,
-                  color=pl_background,
+                  color='w',
                   linewidth=3.5,zorder=9)
     point_diff = actual_points-expected_points
     scored_more = point_diff >= 0
@@ -298,11 +298,11 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        xytext=(np.clip(expected_points,0.69,1.51), 0.5), 
                        xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.69,1.51), 0.5),
                        zorder=9,
-                       arrowprops=dict(color=pl_background,
+                       arrowprops=dict(color='w',
                                        arrowstyle="-|>",
-                                       edgecolor=pl_background,
+                                       edgecolor='w',
                                        shrinkA=2,shrinkB=0,
-                                       linewidth=4.5))
+                                       linewidth=5.5))
         cb.ax.annotate("", 
                        xytext=(np.clip(expected_points,0.69,1.51), 0.5), 
                        xy=(np.clip(actual_points+0.0015 if scored_more else actual_points-0.0015,0.691,1.509), 0.5),
@@ -310,7 +310,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>",
                                        # shrinkB=1.5,
-                                       edgecolor=pl_background,linewidth=2))
+                                       edgecolor=pl_background,linewidth=3))
     ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
     ax2 = fig.add_subplot(gs[:,0])
