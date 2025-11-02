@@ -142,7 +142,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     y_lim = 470
     y_adj = backboard_depth+center_hoop
 
-    hue_norm = colors.CenteredNorm(pts_per_shot,0.4)
+    hue_norm = colors.CenteredNorm(pts_per_shot,0.42)
 
     if season_long:
         game_data = season_df.loc[(season_df['PLAYER_ID']==player_id)]
@@ -274,6 +274,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                      pad=0)
     cb.outline.set_color('white')
     cb.outline.set_linewidth(1.5)
+    cb.ax.set(xlim=(0.69,1.51))
     
     expected_fg_percent = game_data['xFG%'].mean()
     expected_points = game_data['xPTS'].mean()
