@@ -124,7 +124,9 @@ with col2:
     col3, col4 = st.columns([1/3,2/3])
     with col3:
         season_long = st.toggle('Season-long chart?')
-    if not season_long:
+    if season_long:
+        game_date = ''
+    else:
         with col4:
             game_date = st.selectbox('Select a game',list(season_df.loc[season_df['PLAYER_ID']==player_id,'GAME_DATE'].sort_values(ascending=False).unique()), 
                                      index=0, format_func=lambda x: x.strftime('%-m/%-d/%y'))
