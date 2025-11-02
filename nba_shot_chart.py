@@ -283,7 +283,10 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
         # cb.ax.plot(xs,density(xs) / max(density(xs)*1.2)+0.05,color='k',alpha=0.75)
         cb.ax.fill_between(xs,density(xs) / max(density(xs)*1.2)+0.05,color='k',alpha=0.4)
         cb.ax.set(xlabel='')
-    cb.ax.axvline(expected_points,color='k',linewidth=2)
+    cb.ax.axvline(expected_points,color='k',linewidth=3)
+    cb.ax.axvline(game_data['SHOT_PTS'].mean(),
+                  color='g' if game_data['SHOT_PTS'].mean() >= expected_points else 'purple',
+                  linewidth=1.5)
     # cb.ax.axvline(pts_per_shot,color='k',linewidth=0.5,linestyle='--')
     ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
