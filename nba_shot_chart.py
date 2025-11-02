@@ -294,16 +294,14 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     if abs(actual_points-expected_points) >= 0.025:
         cb.ax.annotate("", xytext=(expected_points, 0.5), xy=(actual_points, 0.5),
                        arrowprops=dict(color='w',
-                                       length_includes_head=True,
                                        arrowstyle="-|>",
                                        edgecolor='w',
                                        shrinkA=2,shrinkB=0,
                                        linewidth=4.5))
         cb.ax.annotate("", xytext=(expected_points, 0.5), xy=(actual_points, 0.5),
                        arrowprops=dict(color='g' if actual_points >= expected_points else 'purple',
-                                       length_includes_head=True,
                                        arrowstyle="-|>",
-                                       shrinkB=1.5,
+                                       # shrinkB=1.5,
                                        edgecolor='w',linewidth=2))
         # cb.ax.arrow(expected_points,0.5,
         #             actual_points-expected_points,0,
