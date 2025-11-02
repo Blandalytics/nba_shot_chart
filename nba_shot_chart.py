@@ -287,16 +287,17 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     cb.ax.axvline(expected_points,color='k',linewidth=2)
     cb.ax.axvline(actual_points,
                   color='w',
-                  linewidth=3)
-    point_diff = actual_points-expected_points
-    scored_more = point_diff >= 0
+                  linewidth=3,zorder=9)
     cb.ax.axvline(actual_points,
                   color='g' if scored_more else 'purple',
                   linewidth=1.5)
+    point_diff = actual_points-expected_points
+    scored_more = point_diff >= 0
     if abs(point_diff) >= 0.025:
         cb.ax.annotate("", 
                        xytext=(expected_points+0.0025 if scored_more else expected_points-0.0025, 0.5), 
                        xy=(actual_points+0.003 if scored_more else actual_points-0.003, 0.5),
+                       zorder=9,
                        arrowprops=dict(color='w',
                                        arrowstyle="-|>",
                                        edgecolor='w',
@@ -305,6 +306,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
         cb.ax.annotate("", 
                        xytext=(expected_points+0.0025 if scored_more else expected_points-0.0025, 0.5), 
                        xy=(actual_points+0.0025 if scored_more else actual_points-0.0025, 0.5),
+                       zorder=10,
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>",
                                        # shrinkB=1.5,
