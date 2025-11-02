@@ -293,10 +293,10 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                   linewidth=1.5)
     if abs(actual_points-expected_points) >= 0.025:
         cb.ax.arrow(expected_points,0.5,
-                    actual_points-expected_points,0.5,
+                    actual_points-expected_points,0,
                     length_includes_head=True,
                     color='g' if actual_points >= expected_points else 'purple',
-                    edgecolor='w')
+                    edgecolor='w',linewidth=2)
     # cb.ax.axvline(pts_per_shot,color='k',linewidth=0.5,linestyle='--')
     ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
