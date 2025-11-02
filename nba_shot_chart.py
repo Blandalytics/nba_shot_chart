@@ -305,19 +305,12 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        linewidth=4.5))
         cb.ax.annotate("", 
                        xytext=(expected_points+0.0025 if scored_more else expected_points-0.0025, 0.5), 
-                       xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.69,0.51), 0.5),
+                       xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.69,1.51), 0.5),
                        zorder=10,
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>",
                                        # shrinkB=1.5,
                                        edgecolor='w',linewidth=2))
-        # cb.ax.arrow(expected_points,0.5,
-        #             actual_points-expected_points,0,
-        #             width=0.01,
-        #             length_includes_head=True,
-        #             color='g' if actual_points >= expected_points else 'purple',
-        #             edgecolor='w',linewidth=2)
-    # cb.ax.axvline(pts_per_shot,color='k',linewidth=0.5,linestyle='--')
     ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
     ax2 = fig.add_subplot(gs[:,0])
