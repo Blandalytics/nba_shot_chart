@@ -305,7 +305,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        linewidth=4.5))
         cb.ax.annotate("", 
                        xytext=(expected_points+0.0025 if scored_more else expected_points-0.0025, 0.5), 
-                       xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.69,1.51), 0.5),
+                       xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.6905,1.5005), 0.5),
                        zorder=10,
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>",
