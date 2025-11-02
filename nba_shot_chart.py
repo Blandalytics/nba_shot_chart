@@ -311,7 +311,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        arrowstyle="-|>",
                                        # shrinkB=1.5,
                                        edgecolor='w',linewidth=2))
-    ax1.text(0,475,f'xPoints-per-Shot: {expected_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
+    ax1.text(0,475,f'xPts/Shot: {expected_points:.2f} | Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
     ax2 = fig.add_subplot(gs[:,0])
     
