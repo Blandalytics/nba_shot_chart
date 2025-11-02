@@ -694,7 +694,7 @@ if all_teams:
     col1, col2 = st.columns(2)
     with col1:
         st.header('Eastern Conference')
-        east = col1.container(height=400)
+        east = col1.container(height=600)
         with east:
             for division in range(3):
                 st.header(divisions['Eastern'][division])
@@ -704,7 +704,7 @@ if all_teams:
                     st.dataframe(team_df)
     with col2:
         st.header('Western Conference')
-        west = col2.container(height=400)
+        west = col2.container(height=600)
         with west:
             for division in range(3):
                 st.header(divisions['Western'][division])
