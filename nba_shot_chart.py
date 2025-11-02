@@ -299,6 +299,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        xy=(np.clip(actual_points+0.0025 if scored_more else actual_points-0.0025,0.69,1.51), 0.5),
                        zorder=9,
                        arrowprops=dict(color='w',
+                                       width=0.05,
                                        arrowstyle="-|>",
                                        edgecolor='w',
                                        shrinkA=2,shrinkB=0,
@@ -308,8 +309,8 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        xy=(np.clip(actual_points+0.0015 if scored_more else actual_points-0.0015,0.691,1.509), 0.5),
                        zorder=10,
                        arrowprops=dict(color='g' if scored_more else 'purple',
+                                       width=0.05,
                                        arrowstyle="-|>",
-                                       # shrinkB=1.5,
                                        edgecolor=pl_background,linewidth=3))
     ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
     
