@@ -343,11 +343,11 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax2.set_ylim([0,max_val*1.15])
     
     player_name = game_data['PLAYER_NAME'].iloc[0]
-    date_text = game_date.strftime('%#m/%#d/%y')
     if season_long:
         fig.suptitle(f'Shot Summary: {player_name} (2025-26)\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     else:
+        date_text = game_date.strftime('%#m/%#d/%y')
         fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
