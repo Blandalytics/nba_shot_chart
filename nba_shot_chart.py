@@ -211,7 +211,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                     marker='o',
                     linewidth=0,
                     edgecolor='w',
-                    s=125,
+                    s=120,
                     legend=False,
                     zorder=12,
                     ax=ax1
