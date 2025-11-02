@@ -296,11 +296,12 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        arrowprops=dict(color='w',
                                        arrowstyle="-|>",
                                        edgecolor='w',
-                                       shrinkA=2,shrinkB=0.5,
+                                       shrinkA=2,shrinkB=0,
                                        linewidth=3))
         cb.ax.annotate("", xytext=(expected_points, 0.5), xy=(actual_points, 0.5),
                        arrowprops=dict(color='g' if actual_points >= expected_points else 'purple',
                                        arrowstyle="-|>",
+                                       shrinkB=0,
                                        edgecolor='w',linewidth=1.5))
         # cb.ax.arrow(expected_points,0.5,
         #             actual_points-expected_points,0,
