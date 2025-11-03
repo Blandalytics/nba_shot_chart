@@ -276,6 +276,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax1.set(xlim=(-250,250),ylim=(-53,400),aspect=1)
     ax1.set_axis_off()
     ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
+    ax1.text(-242.5,385,'nba-scoring-chart.streamlit.app',ha='left',fontweight='light')
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
