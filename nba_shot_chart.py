@@ -387,7 +387,6 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax2.set(xlim=(xlim[0]-0.4,xlim[1]),
            ylim=(0,max_val*1.15))
     ax2.axvline((len(categories)-1)/2,ymax=0.95,color='w',alpha=0.25)
-    ax2.axhline(max_val*1.15*0.95,color='w',alpha=0.25)
     
     player_name = game_data['PLAYER_NAME'].iloc[0]
     if season_long:
