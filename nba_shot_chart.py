@@ -340,7 +340,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ftm_points = game_data['FTM'].sum() - (game_data['FTA'].sum() * pts_per_ft)
     total_points = int(round(volume_points + quality_points + finishing_points + xfta_points + ft_draw_points + ftm_points,0))
     
-    categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','xFT\nAttempts','FT\nDrawing','FT\nMakes']
+    categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','xFT\nVolume','FT\nDrawing','FT\nMakes']
     values = [volume_points,quality_points,finishing_points,xfta_points,ft_draw_points,ftm_points]
     cumulative_values = np.cumsum(values)
     max_val = max(cumulative_values)
