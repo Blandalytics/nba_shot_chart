@@ -378,8 +378,9 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     points_scored = int(round(sum(values),0))
     # ax.text(xlim[1]*1.025,cumulative_values[-1],f'{points_scored}pts',color='w',ha='left',va='center')
     ax2.tick_params(axis='both', which='both',length=0)
-    ax2.axhline(points_scored,color='w',
-                xmin=xlim[0]+0.31,
+    ax2.axhline(points_scored,
+                color='w',
+                xmin=xlim[0]+0.1,
                 xmax=(xlim[1]+0.4) / x_width)
     ax2.text(2,max_val*1.13,f'{points_scored} Points Scored',ha='center',fontsize=18)
     ax2.axis('off')
