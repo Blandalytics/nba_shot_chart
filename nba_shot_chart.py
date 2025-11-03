@@ -61,6 +61,22 @@ def load_season(year='2025-26'):
     season_df['TIME_REMAINING'] = season_df['MINUTES_REMAINING'].add(season_df['SECONDS_REMAINING'].div(60))
     season_df['last_5_sec'] = np.where(season_df['TIME_REMAINING']<=1/12,1,0)
     season_df['last_5_sec'] = season_df['last_5_sec'].astype('category').cat.codes
+
+    # "Custom" Shot Classes
+    season_df['SHOT_ZONE_cust'] = None
+    season_df.loc[season_df['SHOT_ZONE_BASIC']=='Restricted Area','SHOT_ZONE_cust'] = 'Restricted Area'
+    season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Left Corner 3','Right Corner 3']),'SHOT_ZONE_cust'] = 'Corner 3'
+    season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Above the Break 3','Backcourt']),'SHOT_ZONE_cust'] = 'Standard 3'
+    season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Mid-Range','In The Paint (Non-RA)']),'SHOT_ZONE_cust'] = 'Mid-Range'
+    season_df[pd.get_dummies(season_df['SHOT_ZONE_cust']).columns.values] = pd.get_dummies(season_df['SHOT_ZONE_cust']).astype('int')
+    
+    # Expected FTA
+    season_df['xFTA'] = (
+        season_df
+        [['Restricted Area', 'Mid-Range', 'Corner 3', 'Standard 3']]
+        .mul([0.37888117, 0.30833862, 0.03176375, 0.14121531])
+        .sum(axis=1)
+    )
     
     season_df['SHOT_MADE_FLAG'] = season_df['SHOT_MADE_FLAG'].astype('category').cat.codes
     
@@ -408,19 +424,23 @@ if per_shot:
     attempt_df = (
         season_df
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby(season_df['PLAYER_ID']).transform('sum') >= season_thresh]
-        .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
+        .assign(fg_volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                ft_volume_points = lambda x: x['xFTA'].mul(pts_per_ft),
+                ft_draw_points = lambda x: x['FTA'].sub(x['xFTA']).mul(pts_per_ft))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'SHOT_ATTEMPTED_FLAG':'Shots',
             'SHOT_PTS':'Points',
-            'volume_points':'Volume Pts',
+            'fg_volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'making_points':'Make Pts'
+            'making_points':'Make Pts',
+            'ft_volume_points':'xFTA Pts',
+            'ft_draw_points':'FT Draw Pts'
         })
         .groupby('Player')
-        [['Points','Volume Pts','Quality Pts','Make Pts']]
+        [['Points','Volume Pts','Quality Pts','Make Pts','xFTA Pts','FT Draw Pts']]
         .mean()
         .round(2)
         .sort_values('Points',ascending=False)
@@ -428,9 +448,11 @@ if per_shot:
     game_df = (
         season_df
         .loc[season_df['SHOT_ATTEMPTED_FLAG'].groupby([season_df['PLAYER_ID'],season_df['GAME_DATE']]).transform('sum') >= game_thresh]
-        .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
+        .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot).add(x['xFTA'].mul(pts_per_ft)),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
-                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']))
+                making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
+                ft_volume_points = lambda x: x['xFTA'].mul(pts_per_ft),
+                ft_draw_points = lambda x: x['FTA'].sub(x['xFTA']).mul(pts_per_ft))
         .rename(columns={
             'PLAYER_NAME':'Player',
             'GAME_DATE':'Date',
@@ -438,10 +460,12 @@ if per_shot:
             'SHOT_PTS':'Points',
             'volume_points':'Volume Pts',
             'quality_points':'Quality Pts',
-            'making_points':'Make Pts'
+            'making_points':'Make Pts',
+            'ft_volume_points':'xFTA Pts',
+            'ft_draw_points':'FT Draw Pts'
         })
         .groupby(['Player','Date'])
-        [['Points','Volume Pts','Quality Pts','Make Pts']]
+        [['Points','Volume Pts','Quality Pts','Make Pts','xFTA Pts','FT Draw Pts']]
         .mean()
         .round(2)
         .sort_values('Points',ascending=False)
@@ -452,7 +476,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
                 making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(pts_per_ft),
+                ft_volume_points = lambda x: x['xFTA'].mul(pts_per_ft),
+                ft_draw_points = lambda x: x['FTA'].sub(x['xFTA']).mul(pts_per_ft),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(pts_per_ft)))
         .rename(columns={
             'PLAYER_NAME':'Player',
@@ -462,13 +487,14 @@ else:
             'quality_points':'Qual Pts',
             'making_points':'Make Pts',
             'SHOT_PTS':'FG Pts',
-            'fta_points':'FTA Pts',
+            'ft_volume_points':'xFTA Pts',
+            'ft_draw_points':'FT Draw Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts',
             'PTS':'Pts',
         })
         .groupby('Player')
-        [['G','Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','FTA Pts','FT Make Pts','FT Pts']]
+        [['G','Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','xFTA Pts','FT Draw Pts','FT Make Pts','FT Pts']]
         .sum()
         .astype({
             'G':'int','FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
@@ -482,7 +508,8 @@ else:
         .assign(volume_points = lambda x: x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot),
                 quality_points = lambda x: x['xPTS'].sub(x['SHOT_ATTEMPTED_FLAG'].mul(pts_per_shot)),
                 making_points = lambda x: x['SHOT_PTS'].sub(x['xPTS']),
-                fta_points = lambda x: x['FTA'].mul(pts_per_ft),
+                ft_volume_points = lambda x: x['xFTA'].mul(pts_per_ft),
+                ft_draw_points = lambda x: x['FTA'].sub(x['xFTA']).mul(pts_per_ft),
                 ftm_points = lambda x: x['FTM'].sub(x['FTA'].mul(pts_per_ft)))
         .rename(columns={
             'PLAYER_NAME':'Player',
@@ -493,13 +520,14 @@ else:
             'quality_points':'Qual Pts',
             'making_points':'Make Pts',
             'SHOT_PTS':'FG Pts',
-            'fta_points':'FTA Pts',
+            'ft_volume_points':'xFTA Pts',
+            'ft_draw_points':'FT Draw Pts',
             'ftm_points':'FT Make Pts',
             'FTM':'FT Pts',
             'PTS':'Pts',
         })
         .groupby(['Player','Date'])
-        [['Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','FTA Pts','FT Make Pts','FT Pts']]
+        [['Pts','FGA','Vol Pts','Qual Pts','Make Pts','FG Pts','xFTA Pts','FT Draw Pts','FT Make Pts','FT Pts']]
         .sum()
         .astype({
             'FGA':'int','Pts':'int','FG Pts':'int','FT Pts':'int'
