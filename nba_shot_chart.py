@@ -76,7 +76,7 @@ def load_season(year='2025-26'):
         [['Restricted Area', 'Mid-Range', 'Corner 3', 'Standard 3']]
         .mul([0.37888117, 0.30833862, 0.03176375, 0.14121531])
         .sum(axis=1)
-        .add(0.00785360435782796)
+        # .add(0.00785360435782796)
     )
     
     season_df['SHOT_MADE_FLAG'] = season_df['SHOT_MADE_FLAG'].astype('category').cat.codes
