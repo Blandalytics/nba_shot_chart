@@ -46,7 +46,7 @@ nba_players = players.get_active_players()
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
 st.title('NBA Scoring Chart')
 st.write("NBA players earn points through a combination of taking shots (and free throws), taking quality shots, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection.")
-st.write("The xFG% model was trained on location data from the 2022-23, 2023-24, and 2024-25 seasons. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv).")
+st.write("The [xFG% model](https://github.com/Blandalytics/nba_shot_chart/blob/main/xFG.png) was trained on location data from the 2022-23, 2023-24, and 2024-25 seasons. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv).")
 st.write("The xFTA model was trained on 2022-23, 2023-24, and 2024-25 data. The target variable was FTA per shot, per-game, using the per-game distribution of shots in the following areas: Restricted Area, Paint, Mid-Range, Corner 3, and Above-the-Break 3.")
 st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
 
