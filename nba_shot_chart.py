@@ -65,18 +65,19 @@ def load_season(year='2025-26'):
     # "Custom" Shot Classes
     season_df['SHOT_ZONE_cust'] = None
     season_df.loc[season_df['SHOT_ZONE_BASIC']=='Restricted Area','SHOT_ZONE_cust'] = 'Restricted Area'
+    season_df.loc[season_df['SHOT_ZONE_BASIC']=='In The Paint (Non-RA)','SHOT_ZONE_cust'] = 'Paint'
+    season_df.loc[season_df['SHOT_ZONE_BASIC']=='Mid-Range','SHOT_ZONE_cust'] = 'Mid-Range'
     season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Left Corner 3','Right Corner 3']),'SHOT_ZONE_cust'] = 'Corner 3'
     season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Above the Break 3','Backcourt']),'SHOT_ZONE_cust'] = 'Standard 3'
-    season_df.loc[season_df['SHOT_ZONE_BASIC'].isin(['Mid-Range','In The Paint (Non-RA)']),'SHOT_ZONE_cust'] = 'Mid-Range'
     season_df[pd.get_dummies(season_df['SHOT_ZONE_cust']).columns.values] = pd.get_dummies(season_df['SHOT_ZONE_cust']).astype('int')
     
     # Expected FTA
     season_df['xFTA'] = (
         season_df
-        [['Restricted Area', 'Mid-Range', 'Corner 3', 'Standard 3']]
-        .mul([0.37888117, 0.30833862, 0.03176375, 0.14121531])
+        [['Restricted Area', 'Paint', 'Mid-Range', 'Corner 3', 'Standard 3']]
+        .mul([0.37529371, 0.32000943, 0.29288417, 0.0211961 , 0.14330077])
         .sum(axis=1)
-        .add(0.049)
+        # .add(0.049)
     )
     
     season_df['SHOT_MADE_FLAG'] = season_df['SHOT_MADE_FLAG'].astype('category').cat.codes
