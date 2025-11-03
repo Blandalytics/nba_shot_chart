@@ -43,8 +43,8 @@ sns.set_theme(
 
 nba_players = players.get_active_players()
 
-st.set_page_config(page_title='NBA Shot Chart', page_icon='🏀',layout='wide')
-st.title('NBA Shot Chart')
+st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
+st.title('NBA Scoring Chart')
 st.write("NBA players earn points through a combination of taking shots (and free throws), taking quality shots, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection.")
 st.write("The expected FG% model was trained on 2022-23, 2023-24, and 2024-25 data. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv).")
 st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
@@ -394,11 +394,11 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     
     player_name = game_data['PLAYER_NAME'].iloc[0]
     if season_long:
-        fig.suptitle(f'Shot Summary: {player_name} (2025-26)\n',fontsize=24, 
+        fig.suptitle(f'Scoring Summary: {player_name} (2025-26)\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     else:
         date_text = game_date.strftime('%#m/%#d/%y')
-        fig.suptitle(f'Shot Summary: {player_name} ({date_text})\n',fontsize=24, 
+        fig.suptitle(f'Scoring Summary: {player_name} ({date_text})\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',fontproperties=prop)
     
     sns.despine()
