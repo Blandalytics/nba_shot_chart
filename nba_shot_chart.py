@@ -366,7 +366,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                 ha='center',va='center',color=color,fontweight='bold',
                 bbox=dict(boxstyle='round', fc='w', ec=color))
         
-    xlim = (-1/(len(categories)-1),len(categories)-1+2/(len(categories)))
+    xlim = (-1/(len(categories)-1),len(categories)-1+3/(len(categories)))
     ax2.set(xlim=xlim)
     x_width = xlim[1] - xlim[0]
     for i in range(len(cumulative_values)):
