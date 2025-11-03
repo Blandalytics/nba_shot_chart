@@ -76,6 +76,7 @@ def load_season(year='2025-26'):
         [['Restricted Area', 'Mid-Range', 'Corner 3', 'Standard 3']]
         .mul([0.37888117, 0.30833862, 0.03176375, 0.14121531])
         .sum(axis=1)
+        .sub(0.00785360435782796)
     )
     
     season_df['SHOT_MADE_FLAG'] = season_df['SHOT_MADE_FLAG'].astype('category').cat.codes
@@ -130,7 +131,7 @@ def load_season(year='2025-26'):
 
 season_df, background_data = load_season()
 pts_per_shot = 1.09
-pts_per_ft = 190241 / 245985 # 2022-23 to 2024-25 avg
+pts_per_ft = 0.78
 
 pad1, col1, col2, pad2 = st.columns([0.2,0.3,0.3,0.2])
 with col1:
