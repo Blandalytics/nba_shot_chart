@@ -335,12 +335,13 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     quality_points = game_data['xPTS'].sub(pts_per_shot).sum()
     finishing_points = game_data['SHOT_PTS'].sub(game_data['xPTS']).sum()
     
-    fta_points = game_data['FTA'].sum() * pts_per_ft
-    ftm_points = game_data['FTM'].sum() - fta_points
-    total_points = int(round(volume_points + quality_points + finishing_points + fta_points + ftm_points,0))
+    xfta_points = game_data['xFTA'].sum() * pts_per_ft
+    ft_draw_points = (game_data['FTA'].sum() - game_data['xFTA'].sum()) * pts_per_ft
+    ftm_points = game_data['FTM'].sum() - (game_data['FTA'].sum() * pts_per_ft)
+    total_points = int(round(volume_points + quality_points + finishing_points + xfta_points + ft_draw_points + ftm_points,0))
     
-    categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','FT\nAttempts','FT\nMakes']
-    values = [volume_points,quality_points,finishing_points,fta_points,ftm_points]
+    categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','xFT\nAttempts','FT\nDrawing','FT\nMakes']
+    values = [volume_points,quality_points,finishing_points,xfta_points,ft_draw_points,ftm_points]
     cumulative_values = np.cumsum(values)
     max_val = max(cumulative_values)
     
