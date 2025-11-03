@@ -339,11 +339,14 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     volume_points = game_data['SHOT_ATTEMPTED_FLAG'].sum() * pts_per_shot
     quality_points = game_data['xPTS'].sub(pts_per_shot).sum()
     finishing_points = game_data['SHOT_PTS'].sub(game_data['xPTS']).sum()
+    shot_points = volume_points + quality_points + finishing_points
     
     xfta_points = game_data['xFTA'].sum() * pts_per_ft
     ft_draw_points = (game_data['FTA'].sum() - game_data['xFTA'].sum()) * pts_per_ft
     ftm_points = game_data['FTM'].sum() - (game_data['FTA'].sum() * pts_per_ft)
-    total_points = int(round(volume_points + quality_points + finishing_points + xfta_points + ft_draw_points + ftm_points,0))
+    ft_points = xfta_points + ft_draw_points + ftm_points
+    
+    total_points = int(round(shot_points + ft_points,0))
     
     categories = ['Shot\nVolume','Shot\nQuality','Shot\nMaking','xFT\nVolume','FT\nDrawing','FT\nMaking']
     values = [volume_points,quality_points,finishing_points,xfta_points,ft_draw_points,ftm_points]
@@ -387,8 +390,8 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                 color='w',
                 xmin=xlim[0]+0.22,
                 xmax=(xlim[1]+0.4) / x_width)
-    ax2.text(1,max_val*1.15,'Shots',ha='center',fontsize=14)
-    ax2.text(4,max_val*1.15,'Free Throws',ha='center',fontsize=14)
+    ax2.text(1,max_val*1.15,f'Shots: {shot_points:.0f}',ha='center',fontsize=14)
+    ax2.text(4,max_val*1.15,f'Free Throws: {ft_points:.0f}',ha='center',fontsize=14)
     ax2.text((len(categories)-1)/2,max_val*1.225,f'{points_scored} Points Scored',ha='center',fontsize=18)
     ax2.axis('off')
     ax2.set(xlim=(xlim[0]-0.4,xlim[1]),
