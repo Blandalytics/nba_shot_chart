@@ -358,7 +358,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
             edgecolor=color,
             width=0.8
         )
-        ax2.text(categories[i],max_val*1.0675,f'{categories[i]:}',
+        ax2.text(categories[i],max_val*1.08,f'{categories[i]:}',
                  fontsize=11,
                 ha='center',va='center',color='w')
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
