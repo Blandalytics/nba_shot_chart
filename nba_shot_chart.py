@@ -47,11 +47,8 @@ st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide
 pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
 with col1:
     st.title('NBA Scoring Chart')
-    st.markdown("NBA players earn points through a combination of taking shots (and free throws), having those shots be high quality, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection. :green[Green] means the player made the shot and/or added points in that category. :violet[Purple] means the opposite.")
-    st.write("The [xFG% model](https://github.com/Blandalytics/nba_shot_chart/blob/main/xFG.png?raw=true) was trained on location data from the 2022-23, 2023-24, and 2024-25 seasons. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv?raw=true).")
-    st.write("The xFTA model was trained on 2022-23, 2023-24, and 2024-25 data. The target variable was per-game FTA/shot, using the per-game distribution of shots in the following areas: [Restricted Area, Paint, Mid-Range, Corner 3, and Above-the-Break 3](https://github.com/Blandalytics/nba_shot_chart/blob/main/shot_loc_classes.png?raw=true).")
-    st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
-
+    st.markdown("NBA players earn points through a combination of taking shots (and free throws), having those shots be high quality, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection. :green[Green] means the player made the shot and/or added points in that category. :violet[Purple] means the opposite. Model explainers can be found further down the page.")
+    
 @st.cache_data(ttl=1200,show_spinner=f"Loading shots")
 def load_season(year='2025-26'):
     season_df = shotchartdetail.ShotChartDetail(
@@ -420,6 +417,10 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
 pad1, col1, pad2 = st.columns([0.225,0.55,0.225])
 with col1:
     shot_summary(player_id)
+    st.write("The [xFG% model](https://github.com/Blandalytics/nba_shot_chart/blob/main/xFG.png?raw=true) was trained on location data from the 2022-23, 2023-24, and 2024-25 seasons. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv?raw=true).")
+    st.write("The xFTA model was trained on 2022-23, 2023-24, and 2024-25 data. The target variable was per-game FTA/shot, using the per-game distribution of shots in the following areas: [Restricted Area, Paint, Mid-Range, Corner 3, and Above-the-Break 3](https://github.com/Blandalytics/nba_shot_chart/blob/main/shot_loc_classes.png?raw=true).")
+    st.write('Find me [@Blandalytics](https://bsky.app/profile/blandalytics.pitcherlist.com), and subscribe to [Pitcher List](https://pitcherlist.com/premium/) if you want to support my (mostly baseball) work!')
+
 
 col1, col2, col3 = st.columns(3)
 with col1:
