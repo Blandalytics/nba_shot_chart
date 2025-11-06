@@ -47,7 +47,15 @@ st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide
 pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
 with col1:
     st.title('NBA Scoring Chart')
-    st.markdown("NBA players earn points through a combination of taking shots (and free throws), having those shots be high quality, and making those shots (and free throws). This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection. :green[Green] means the player made the shot and/or added points in that category. :violet[Purple] means the opposite. Model explainers can be found further down the page.")
+    st.markdown("""
+    NBA players earn points through a combination of:
+    - Shot volume (more shots = more points; the average shot scores ~1.09 points)
+    - Shot quality (expected points-per-shot above or below 1.09)
+    - Making those shots (points above expected, based on shot quality). 
+    - Free throws (expected free throw attempt points; shots in different areas draw fouls more often, and are worth ~0.78 points per free throw attempt)
+    - Drawing free throws (free throw attempts above expected, with each worth ~0.77 points per free throw attempt)
+    - Making free throws (free throw makes above expected)
+    This app is designed to illustrate *how* a player scored (or didn't score) points in a given game, and visually represent the quality of their shot selection. :green[Green] means the player made the shot and/or added points in that category. :violet[Purple] means the opposite. Model explainers can be found further down the page.""")
     
 @st.cache_data(ttl=1200,show_spinner=f"Loading shots")
 def load_season(year='2025-26'):
