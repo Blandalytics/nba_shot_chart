@@ -177,9 +177,10 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
 
     hue_norm = colors.CenteredNorm(pts_per_shot,0.42)
 
+    shot_thresh = 200
     if season_long:
         game_data = season_df.loc[(season_df['PLAYER_ID']==player_id)]
-        shot_limit = min(150,game_data.shape[0])
+        shot_limit = min(shot_thresh,game_data.shape[0])
         chart_data = game_data.tail(shot_limit).copy()
     else:
         game_data = season_df.loc[(season_df['PLAYER_ID']==player_id) & (season_df['GAME_DATE']==game_date)]
@@ -292,8 +293,8 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax1.set(xlim=(-250,250),ylim=(-53,400),aspect=1)
     ax1.set_axis_off()
     ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
-    if shot_limit == 150:
-        ax1.text(0,5-y_adj,'*Last 150 shots*',ha='center',fontweight='light',fontsize=10)
+    if shot_limit == shot_thresh:
+        ax1.text(0,5-y_adj,f'*Last {shot_thresh} shots*',ha='center',fontweight='light',fontsize=10)
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
