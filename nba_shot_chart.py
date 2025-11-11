@@ -179,8 +179,11 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
 
     if season_long:
         game_data = season_df.loc[(season_df['PLAYER_ID']==player_id)]
+        shot_limit = min(150,game_data.shape[0])
+        chart_data = game_data.tail(shot_limit).copy()
     else:
         game_data = season_df.loc[(season_df['PLAYER_ID']==player_id) & (season_df['GAME_DATE']==game_date)]
+        shot_limit = None
     # chart_data = shot_chart_detail.loc[(shot_chart_detail['LOC_Y']<=y_lim) & (shot_chart_detail['last_5_sec']==0)].copy()
     fig = plt.figure(figsize=(14,8))
     gs = GridSpec(2, 2, figure=fig,
@@ -198,7 +201,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
               # mincnt=1,
               extent=(-250,250,-y_adj,y_lim))
     
-    sns.scatterplot(game_data.loc[(game_data['SHOT_MADE_FLAG']==0)],
+    sns.scatterplot(chart_data.loc[(chart_data['SHOT_MADE_FLAG']==0)],
                     x='LOC_X',
                     y='LOC_Y',
                     color='None',
@@ -211,7 +214,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                     zorder=11,
                     ax=ax1
                    )
-    sns.scatterplot(game_data.loc[(game_data['SHOT_MADE_FLAG']==0)],
+    sns.scatterplot(chart_data.loc[(chart_data['SHOT_MADE_FLAG']==0)],
                     x='LOC_X',
                     y='LOC_Y',
                     color='None',
@@ -224,7 +227,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                     ax=ax1
                    )
     
-    sns.scatterplot(game_data.loc[(game_data['SHOT_MADE_FLAG']==1)],
+    sns.scatterplot(chart_data.loc[(chart_data['SHOT_MADE_FLAG']==1)],
                     x='LOC_X',
                     y='LOC_Y',
                     color='green',
@@ -288,6 +291,8 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax1.set(xlim=(-250,250),ylim=(-53,400),aspect=1)
     ax1.set_axis_off()
     ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
+    if shot_limit == 150:
+        ax1.text(-242.5,385,'*Last 150 shots',ha='left',fontweight='light')
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
