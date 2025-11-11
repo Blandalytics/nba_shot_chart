@@ -52,7 +52,7 @@ with col1:
     - Shot volume (more shots = more points; the average shot scores ~1.09 points)
     - Shot quality (expected points-per-shot above or below 1.09)
     - Making those shots (points above expected, based on shot quality)
-    - Free throws (expected free throw attempt points; shots in different areas draw fouls more often, and are worth ~0.78 points per free throw attempt)
+    - Turning shots into free throws (expected free throw attempt points; shots in different areas draw fouls more often, and are worth ~0.78 points per free throw attempt)
     - Drawing free throws (free throw attempts above expected)
     - Making free throws (free throw makes above or below 0.78 points per free throw attempt)
     
