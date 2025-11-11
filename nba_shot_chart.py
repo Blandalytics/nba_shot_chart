@@ -293,7 +293,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     ax1.set_axis_off()
     ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
     if shot_limit == 150:
-        ax1.text(-242.5,385,'*Last 150 shots',ha='left',fontweight='light',fonstize=10)
+        ax1.text(-242.5,385,'*Last 150 shots',ha='left',fontweight='light',fontsize=10)
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
