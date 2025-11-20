@@ -597,7 +597,7 @@ def plotly_chart(points_agg):
     white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
     
     hover_text = plot_vals[['PLAYER_NAME','val_added']]
-    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.1f} pts</b><br><br>Shot Quality: %{x:.1f}pts<br>Shot Making: %{y:.1f}pts<extra></extra>'
+    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.1f} pts</b><br><br>Shot Making: %{x:.1f}pts<br>Shot Quality: %{y:.1f}pts<extra></extra>'
     
     fig = go.Figure(
         layout=go.Layout(
@@ -605,19 +605,19 @@ def plotly_chart(points_agg):
             font=dict(color='white'),
             paper_bgcolor=pl_background,
             plot_bgcolor=pl_background,
-            width=800 * qual_lim / (top_lim/1.1),
-            height=800 * make_lim / (top_lim/1.1),
+            width=800 * make_lim / (top_lim/1.1),
+            height=800 * qual_lim / (top_lim/1.1),
             margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
-                    text="Shot Quality Points Added"
+                    text="Shot Making Points Added"
                 )
             ),
             yaxis=dict(
                 title=dict(
-                    text="Shot Making Points Added"
+                    text="Shot Quality Points Added"
                 )
-            )
+            ),
         ))
     
     for st_dev in [-3,-2,-1,1,2,3]:
@@ -630,8 +630,8 @@ def plotly_chart(points_agg):
                      dash='dash')
         )
         
-    fig.add_trace(go.Scatter(x=plot_vals['qual_pts'], 
-                             y=plot_vals['make_pts'],
+    fig.add_trace(go.Scatter(x=plot_vals['make_pts'],
+                             y=plot_vals['qual_pts'], 
                              text=hover_text,
                              hovertemplate=hover_format,
                              marker=dict(
