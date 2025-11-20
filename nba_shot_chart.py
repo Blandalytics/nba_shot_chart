@@ -731,28 +731,29 @@ def plotly_chart(points_agg):
     fig.show()
     st.plotly_chart(fig,width='content', theme=None,config = {'scrollZoom': False})
 
-plotly_chart(
-    season_df
-    .assign(vol_pts = pts_per_shot,
-            qual_pts = lambda x: x['xPTS_avg'].sub(pts_per_shot),
-            make_pts = lambda x: x['SHOT_PTS'].sub(x['xPTS_avg']),
-            val_added = lambda x: x['SHOT_PTS'].sub(pts_per_shot)
-           )
-    .groupby(['PLAYER_ID','PLAYER_NAME'])
-    [['TEAM_ID','SHOT_ATTEMPTED_FLAG','vol_pts','qual_pts','make_pts','SHOT_PTS','val_added']]
-    .agg({
-        'TEAM_ID':'last',
-        'SHOT_ATTEMPTED_FLAG':'sum',
-        'vol_pts':'sum',
-        'qual_pts':'sum',
-        'make_pts':'sum',
-        'SHOT_PTS':'sum',
-        'val_added':'sum'
-    })
-    .sort_values('make_pts',ascending=False)
-    .reset_index()
-    
-)
+pad1, col1, pad2 = st.columns([0.225,0.55,0.225])
+with col1:
+    plotly_chart(
+        season_df
+        .assign(vol_pts = pts_per_shot,
+                qual_pts = lambda x: x['xPTS_avg'].sub(pts_per_shot),
+                make_pts = lambda x: x['SHOT_PTS'].sub(x['xPTS_avg']),
+                val_added = lambda x: x['SHOT_PTS'].sub(pts_per_shot)
+               )
+        .groupby(['PLAYER_ID','PLAYER_NAME'])
+        [['TEAM_ID','SHOT_ATTEMPTED_FLAG','vol_pts','qual_pts','make_pts','SHOT_PTS','val_added']]
+        .agg({
+            'TEAM_ID':'last',
+            'SHOT_ATTEMPTED_FLAG':'sum',
+            'vol_pts':'sum',
+            'qual_pts':'sum',
+            'make_pts':'sum',
+            'SHOT_PTS':'sum',
+            'val_added':'sum'
+        })
+        .sort_values('make_pts',ascending=False)
+        .reset_index()
+    )
 
 team_map = {
  'Atlanta Hawks': 1610612737,
