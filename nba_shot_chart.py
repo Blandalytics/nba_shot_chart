@@ -614,7 +614,7 @@ def plotly_chart(points_agg):
     white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
     
     hover_text = plot_vals[['PLAYER_NAME','val_added']]
-    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.2f} pts</b><br><br>Shot Quality: %{x:.2f}pts<br>Shot Making: %{y:.2f}pts<extra></extra>'
+    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.1f} pts</b><br><br>Shot Quality: %{x:.1f}pts<br>Shot Making: %{y:.1f}pts<extra></extra>'
     
     for st_dev in [-3,-2,-1,1,2,3]:
         alpha_val = abs(abs(st_dev)-3)*0.2+0.1
