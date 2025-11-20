@@ -748,7 +748,9 @@ plotly_chart(
         'val_added':'sum'
     })
     .sort_values('make_pts',ascending=False)
-    .reset_index()
+    .reset_index(),
+    width='content',
+    
 )
 
 team_map = {
