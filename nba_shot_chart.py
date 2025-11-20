@@ -713,7 +713,7 @@ def plotly_chart(points_agg):
     fig.update_layout(showlegend=False)
     fig.update_annotations(font=dict(color='black'))
     fig.show()
-    st.plotly_chart(fig,use_container_width=True, theme=None)
+    st.plotly_chart(fig,use_container_width=False, theme=None)
 
 plotly_chart(
     season_df
