@@ -609,7 +609,8 @@ def plotly_chart(points_agg):
     
     plot_vals = points_agg.loc[(points_agg['SHOT_ATTEMPTED_FLAG']>=shot_thresh)]
     
-    axis_lim = plot_vals[['qual_pts','make_pts']].abs().max(axis=1).max()*1.1
+    top_lim = plot_vals[['qual_pts','make_pts']].max(axis=1).max()*1.1
+    bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).max()*1.1
     points_added_st_dev = plot_vals['val_added'].std() / 2
     white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
     
@@ -619,8 +620,8 @@ def plotly_chart(points_agg):
     for st_dev in [-3,-2,-1,1,2,3]:
         alpha_val = abs(abs(st_dev)-3)*0.2+0.1
         fig.add_scatter(
-            x=[-axis_lim+st_dev*points_added_st_dev, axis_lim+st_dev*points_added_st_dev], 
-            y=[axis_lim+st_dev*points_added_st_dev, -axis_lim+st_dev*points_added_st_dev], 
+            x=[bottom_lim+st_dev*points_added_st_dev, top_lim+st_dev*points_added_st_dev], 
+            y=[top_lim+st_dev*points_added_st_dev, bottom_lim+st_dev*points_added_st_dev], 
             mode='lines', 
             line=dict(color=line_col+f',{alpha_val})',
                      dash='dash')
@@ -644,8 +645,8 @@ def plotly_chart(points_agg):
     
     
     fig.add_scatter(
-            x=[-axis_lim, axis_lim], 
-            y=[axis_lim, -axis_lim], 
+            x=[bottom_lim, top_lim], 
+            y=[top_lim, bottom_lim], 
             mode='lines', 
             line_color='white'
         )
@@ -718,8 +719,8 @@ def plotly_chart(points_agg):
     #     showarrow=False,
     # )
     
-    fig.update_xaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
-    fig.update_yaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
+    fig.update_xaxes(range=[bottom_lim, top_lim],showgrid=False, showline=True, zeroline=False)
+    fig.update_yaxes(range=[bottom_lim, top_lim],showgrid=False, showline=True, zeroline=False)
     fig.update_layout(showlegend=False)
     fig.update_annotations(font=dict(color='black'))
     fig.show()
