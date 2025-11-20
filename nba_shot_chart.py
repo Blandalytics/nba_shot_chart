@@ -591,6 +591,8 @@ def plotly_chart(points_agg):
     top_lim = plot_vals[['qual_pts','make_pts']].max(axis=1).max()*1.1
     qual_lim = plot_vals['qual_pts'].max()
     make_lim = plot_vals['make_pts'].max()
+    qual_bot = plot_vals['qual_pts'].min()
+    make_bot = plot_vals['make_pts'].min()
     bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).min()*1.1
     axis_lim = max(top_lim,bottom_lim)
     points_added_st_dev = plot_vals['val_added'].std() / 2
@@ -722,8 +724,8 @@ def plotly_chart(points_agg):
     #     showarrow=False,
     # )
     
-    fig.update_xaxes(range=[bottom_lim, make_lim*1.1],showgrid=False, showline=True, zeroline=False)
-    fig.update_yaxes(range=[bottom_lim, qual_lim*1.1],showgrid=False, showline=True, zeroline=False)
+    fig.update_xaxes(range=[make_bot, make_lim*1.1],showgrid=False, showline=True, zeroline=False)
+    fig.update_yaxes(range=[qual_bot, qual_lim*1.1],showgrid=False, showline=True, zeroline=False)
     fig.update_layout(showlegend=False)
     fig.update_annotations(font=dict(color='black'))
     fig.show()
