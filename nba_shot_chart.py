@@ -722,8 +722,8 @@ def plotly_chart(points_agg):
     #     showarrow=False,
     # )
     
-    fig.update_xaxes(range=[bottom_lim, make_lim],showgrid=False, showline=True, zeroline=False)
-    fig.update_yaxes(range=[bottom_lim, qual_lim],showgrid=False, showline=True, zeroline=False)
+    fig.update_xaxes(range=[bottom_lim, make_lim*1.1],showgrid=False, showline=True, zeroline=False)
+    fig.update_yaxes(range=[bottom_lim, qual_lim*1.1],showgrid=False, showline=True, zeroline=False)
     fig.update_layout(showlegend=False)
     fig.update_annotations(font=dict(color='black'))
     fig.show()
