@@ -653,10 +653,10 @@ def plotly_chart(points_agg):
         )
     
     fig.add_annotation(
-        xref="x domain",
-        yref="y domain",
-        x=0.5,
-        y=0.5,
+        # xref="x domain",
+        # yref="y domain",
+        x=0,
+        y=0,
         text="Avg",
         opacity=0.9,
         align="center",
