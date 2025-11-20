@@ -582,15 +582,31 @@ with col2:
 
 import plotly.graph_objects as go
 
-def plotly_chart(points_agg):
+def plotly_chart(points_agg):    
+    shot_thresh = points_agg['SHOT_ATTEMPTED_FLAG'].quantile(0.75)
+    line_col = "rgba( 255, 255, 255"
+    
+    plot_vals = points_agg.loc[(points_agg['SHOT_ATTEMPTED_FLAG']>=shot_thresh)]
+    
+    top_lim = plot_vals[['qual_pts','make_pts']].max(axis=1).max()*1.1
+    qual_lim = plot_vals['qual_pts'].max()
+    make_lim = plot_vals['make_pts'].max()
+    bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).min()*1.1
+    axis_lim = max(top_lim,bottom_lim)
+    points_added_st_dev = plot_vals['val_added'].std() / 2
+    white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
+    
+    hover_text = plot_vals[['PLAYER_NAME','val_added']]
+    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.1f} pts</b><br><br>Shot Quality: %{x:.1f}pts<br>Shot Making: %{y:.1f}pts<extra></extra>'
+    
     fig = go.Figure(
         layout=go.Layout(
             title=dict(text="NBA Shot Value Added",x=0.5,xanchor='center',y=0.97),
             font=dict(color='white'),
             paper_bgcolor=pl_background,
             plot_bgcolor=pl_background,
-            width=800,
-            height=800,
+            width=800 * qual_lim / (top_lim/1.1),
+            height=800 * make_lim / (top_lim/1.1),
             margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
@@ -603,20 +619,6 @@ def plotly_chart(points_agg):
                 )
             )
         ))
-    
-    shot_thresh = points_agg['SHOT_ATTEMPTED_FLAG'].quantile(0.75)
-    line_col = "rgba( 255, 255, 255"
-    
-    plot_vals = points_agg.loc[(points_agg['SHOT_ATTEMPTED_FLAG']>=shot_thresh)]
-    
-    top_lim = plot_vals[['qual_pts','make_pts']].max(axis=1).max()*1.1
-    bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).min()*1.1
-    axis_lim = max(top_lim,bottom_lim)
-    points_added_st_dev = plot_vals['val_added'].std() / 2
-    white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
-    
-    hover_text = plot_vals[['PLAYER_NAME','val_added']]
-    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.1f} pts</b><br><br>Shot Quality: %{x:.1f}pts<br>Shot Making: %{y:.1f}pts<extra></extra>'
     
     for st_dev in [-3,-2,-1,1,2,3]:
         alpha_val = abs(abs(st_dev)-3)*0.2+0.1
