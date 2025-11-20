@@ -665,58 +665,58 @@ def plotly_chart(points_agg):
         showarrow=False,
     )
     
-    fig.add_annotation(
-        xref="x domain",
-        yref="y domain",
-        x=0.05,
-        y=0.05,
-        text="Chuckers",
-        align="center",
-        bordercolor="#c7c7c7",
-        borderwidth=2,
-        borderpad=4,
-        bgcolor="white",
-        showarrow=False,
-    )
-    fig.add_annotation(
-        xref="x domain",
-        yref="y domain",
-        x=0.95,
-        y=0.05,
-        text="Quality Merchants",
-        align="center",
-        bordercolor="#c7c7c7",
-        borderwidth=2,
-        borderpad=4,
-        bgcolor="white",
-        showarrow=False,
-    )
-    fig.add_annotation(
-        xref="x domain",
-        yref="y domain",
-        x=0.95,
-        y=0.95,
-        text="Pure Efficiency",
-        align="center",
-        bordercolor="#c7c7c7",
-        borderwidth=2,
-        borderpad=4,
-        bgcolor="white",
-        showarrow=False,
-    )
-    fig.add_annotation(
-        xref="x domain",
-        yref="y domain",
-        x=0.05,
-        y=0.95,
-        text="Shot Makers",
-        align="center",
-        bordercolor="#c7c7c7",
-        borderwidth=2,
-        borderpad=4,
-        bgcolor="white",
-        showarrow=False,
-    )
+    # fig.add_annotation(
+    #     xref="x domain",
+    #     yref="y domain",
+    #     x=0.05,
+    #     y=0.05,
+    #     text="Chuckers",
+    #     align="center",
+    #     bordercolor="#c7c7c7",
+    #     borderwidth=2,
+    #     borderpad=4,
+    #     bgcolor="white",
+    #     showarrow=False,
+    # )
+    # fig.add_annotation(
+    #     xref="x domain",
+    #     yref="y domain",
+    #     x=0.95,
+    #     y=0.05,
+    #     text="Quality Merchants",
+    #     align="center",
+    #     bordercolor="#c7c7c7",
+    #     borderwidth=2,
+    #     borderpad=4,
+    #     bgcolor="white",
+    #     showarrow=False,
+    # )
+    # fig.add_annotation(
+    #     xref="x domain",
+    #     yref="y domain",
+    #     x=0.95,
+    #     y=0.95,
+    #     text="Pure Efficiency",
+    #     align="center",
+    #     bordercolor="#c7c7c7",
+    #     borderwidth=2,
+    #     borderpad=4,
+    #     bgcolor="white",
+    #     showarrow=False,
+    # )
+    # fig.add_annotation(
+    #     xref="x domain",
+    #     yref="y domain",
+    #     x=0.05,
+    #     y=0.95,
+    #     text="Shot Makers",
+    #     align="center",
+    #     bordercolor="#c7c7c7",
+    #     borderwidth=2,
+    #     borderpad=4,
+    #     bgcolor="white",
+    #     showarrow=False,
+    # )
     
     fig.update_xaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
     fig.update_yaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
