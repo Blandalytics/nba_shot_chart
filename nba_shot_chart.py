@@ -580,6 +580,163 @@ with col2:
     st.header('Game Leaderboard')
     st.dataframe(game_df)
 
+import plotly.graph_objects as go
+
+def plotly_chart(points_agg):
+    fig = go.Figure(
+        layout=go.Layout(
+            title=dict(text="NBA Shot Value Added",x=0.5,xanchor='center',y=0.97),
+            font=dict(color='white'),
+            paper_bgcolor=pl_background,
+            plot_bgcolor=pl_background,
+            width=800,
+            height=800,
+            margin=dict(b=10,l=10,r=10,t=50)
+        ))
+    
+    shot_thresh = points_agg['SHOT_ATTEMPTED_FLAG'].quantile(0.75)
+    line_col = "rgba( 255, 255, 255"
+    
+    plot_vals = points_agg.loc[(points_agg['SHOT_ATTEMPTED_FLAG']>=shot_thresh)]
+    
+    axis_lim = plot_vals[['qual_pts','make_pts']].abs().max(axis=1).max()*1.1
+    points_added_st_dev = plot_vals['val_added'].std() / 2
+    white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
+    
+    hover_text = plot_vals[['PLAYER_NAME','val_added']]
+    hover_format = '<b>%{text[0]}</b><br><b>Points Added: %{text[1]:.2f} pts</b><br><br>Shot Quality: %{x:.2f}pts<br>Shot Making: %{y:.2f}pts<extra></extra>'
+    
+    for st_dev in [-3,-2,-1,1,2,3]:
+        alpha_val = abs(abs(st_dev)-3)*0.2+0.1
+        fig.add_scatter(
+            x=[-axis_lim+st_dev*points_added_st_dev, axis_lim+st_dev*points_added_st_dev], 
+            y=[axis_lim+st_dev*points_added_st_dev, -axis_lim+st_dev*points_added_st_dev], 
+            mode='lines', 
+            line=dict(color=line_col+f',{alpha_val})',
+                     dash='dash')
+        )
+        
+    fig.add_trace(go.Scatter(x=plot_vals['qual_pts'], 
+                             y=plot_vals['make_pts'],
+                             text=hover_text,
+                             hovertemplate=hover_format,
+                             marker=dict(
+            size=16,
+            color=plot_vals['val_added'], #set color equal to a variable
+            # colorscale='PRGn', # one of plotly colorscales,
+                                 colorscale=[[0,'purple'],[white_point,'white'],[1,'green']],
+                                 line=dict(width=1,color=pl_background),
+            showscale=False
+        ),
+                        mode='markers',
+                        name='markers'),
+                 )
+    
+    
+    fig.add_scatter(
+            x=[-axis_lim, axis_lim], 
+            y=[axis_lim, -axis_lim], 
+            mode='lines', 
+            line_color='white'
+        )
+    
+    fig.add_annotation(
+        xref="x domain",
+        yref="y domain",
+        x=0.5,
+        y=0.5,
+        text="Avg",
+        opacity=0.9,
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="white",
+        showarrow=False,
+    )
+    
+    fig.add_annotation(
+        xref="x domain",
+        yref="y domain",
+        x=0.05,
+        y=0.05,
+        text="Chuckers",
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="white",
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="x domain",
+        yref="y domain",
+        x=0.95,
+        y=0.05,
+        text="Quality Merchants",
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="white",
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="x domain",
+        yref="y domain",
+        x=0.95,
+        y=0.95,
+        text="Pure Efficiency",
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="white",
+        showarrow=False,
+    )
+    fig.add_annotation(
+        xref="x domain",
+        yref="y domain",
+        x=0.05,
+        y=0.95,
+        text="Shot Makers",
+        align="center",
+        bordercolor="#c7c7c7",
+        borderwidth=2,
+        borderpad=4,
+        bgcolor="white",
+        showarrow=False,
+    )
+    
+    fig.update_xaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
+    fig.update_yaxes(range=[-axis_lim, axis_lim],showgrid=False, showline=True, zeroline=False)
+    fig.update_layout(showlegend=False)
+    fig.update_annotations(font=dict(color='black'))
+    fig.show()
+    st.plotly_chart(fig,use_container_width=True, theme=None)
+
+plotly_chart(
+    season_df
+    .assign(vol_pts = pts_per_shot,
+            qual_pts = lambda x: x['xPTS_avg'].sub(pts_per_shot),
+            make_pts = lambda x: x['SHOT_PTS'].sub(x['xPTS_avg']),
+            val_added = lambda x: x['SHOT_PTS'].sub(pts_per_shot)
+           )
+    .groupby(['PLAYER_ID','PLAYER_NAME'])
+    [['TEAM_ID','SHOT_ATTEMPTED_FLAG','vol_pts','qual_pts','make_pts','SHOT_PTS','val_added']]
+    .agg({
+        'TEAM_ID':'last',
+        'SHOT_ATTEMPTED_FLAG':'sum',
+        'vol_pts':'sum',
+        'qual_pts':'sum',
+        'make_pts':'sum',
+        'SHOT_PTS':'sum',
+        'val_added':'sum'
+    })
+    .sort_values('make_pts',ascending=False)
+    .reset_index()
+)
+
 team_map = {
  'Atlanta Hawks': 1610612737,
  'Boston Celtics': 1610612738,
