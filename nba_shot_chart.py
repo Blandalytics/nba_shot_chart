@@ -591,7 +591,7 @@ def plotly_chart(points_agg):
             plot_bgcolor=pl_background,
             width=800,
             height=800,
-            margin=dict(b=50,l=50,r=50,t=50),
+            margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
                     text="Shot Quality Points Added"
