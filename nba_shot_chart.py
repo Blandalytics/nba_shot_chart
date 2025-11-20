@@ -591,7 +591,7 @@ def plotly_chart(points_agg):
             plot_bgcolor=pl_background,
             width=800,
             height=800,
-            margin=dict(b=10,l=10,r=10,t=50)
+            margin=dict(b=20,l=20,r=20,t=50)
         ))
     
     shot_thresh = points_agg['SHOT_ATTEMPTED_FLAG'].quantile(0.75)
