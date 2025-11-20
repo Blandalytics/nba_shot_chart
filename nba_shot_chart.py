@@ -605,8 +605,8 @@ def plotly_chart(points_agg):
             font=dict(color='white'),
             paper_bgcolor=pl_background,
             plot_bgcolor=pl_background,
-            width=800 * make_lim / (top_lim/1.1),
-            height=800 * qual_lim / (top_lim/1.1),
+            width=1000 * make_lim / (top_lim/1.1),
+            height=1000 * qual_lim / (top_lim/1.1),
             margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
@@ -727,7 +727,7 @@ def plotly_chart(points_agg):
     fig.update_layout(showlegend=False)
     fig.update_annotations(font=dict(color='black'))
     fig.show()
-    st.plotly_chart(fig,use_container_width=False, theme=None)
+    st.plotly_chart(fig,width='content', theme=None,config = {'scrollZoom': False})
 
 plotly_chart(
     season_df
@@ -748,8 +748,7 @@ plotly_chart(
         'val_added':'sum'
     })
     .sort_values('make_pts',ascending=False)
-    .reset_index(),
-    config = {'scrollZoom': False}
+    .reset_index()
     
 )
 
