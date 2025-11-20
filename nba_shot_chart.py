@@ -603,12 +603,12 @@ def plotly_chart(points_agg):
     
     fig = go.Figure(
         layout=go.Layout(
-            title=dict(text="NBA Shot Value Added",x=0.5,xanchor='center',y=0.97),
+            title=dict(text="NBA Shot Value Added",x=0.5,xanchor='center',y=0.97,fontsize=24),
             font=dict(color='white'),
             paper_bgcolor=pl_background,
             plot_bgcolor=pl_background,
-            width=1000 * make_lim / (top_lim/1.1),
-            height=1000 * qual_lim / (top_lim/1.1),
+            width=1200 * make_lim / (top_lim/1.1),
+            height=1200 * qual_lim / (top_lim/1.1),
             margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
