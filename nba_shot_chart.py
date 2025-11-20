@@ -749,7 +749,7 @@ plotly_chart(
     })
     .sort_values('make_pts',ascending=False)
     .reset_index(),
-    width='content',
+    config = {'scrollZoom': False}
     
 )
 
