@@ -610,7 +610,7 @@ def plotly_chart(points_agg):
     plot_vals = points_agg.loc[(points_agg['SHOT_ATTEMPTED_FLAG']>=shot_thresh)]
     
     top_lim = plot_vals[['qual_pts','make_pts']].max(axis=1).max()*1.1
-    bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).max()*1.1
+    bottom_lim = plot_vals[['qual_pts','make_pts']].min(axis=1).min()*1.1
     axis_lim = max(top_lim,bottom_lim)
     points_added_st_dev = plot_vals['val_added'].std() / 2
     white_point = -plot_vals['val_added'].min() / (plot_vals['val_added'].max()-plot_vals['val_added'].min())
