@@ -316,7 +316,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
             norm_arr.append(temp)
         return norm_arr
     if game_data.shape[0]>1:
-        density = gaussian_kde(np.clip(game_data['xPTS'],cb.ax.get_xlim()[0],cb.ax.get_xlim()[1]))
+        density = gaussian_kde(np.clip(game_data['xPTS'].dropna(),cb.ax.get_xlim()[0],cb.ax.get_xlim()[1]))
         xs = np.linspace(cb.ax.get_xlim()[0],cb.ax.get_xlim()[1],200)
         fit_xs = xs / max(xs)
         density.covariance_factor = lambda : .1
