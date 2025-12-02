@@ -608,7 +608,7 @@ def plotly_chart(points_agg):
             paper_bgcolor=pl_background,
             plot_bgcolor=pl_background,
             width=1200 * make_lim / (top_lim/1.1),
-            height=1200 * qual_lim / (top_lim/1.1),
+            height=800 * qual_lim / (top_lim/1.1),
             margin=dict(b=60,l=60,r=60,t=60),
             xaxis=dict(
                 title=dict(
