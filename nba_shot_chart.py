@@ -47,7 +47,7 @@ nba_players = players.get_active_players()
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
 pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
 with col1:
-    new_title = '<p style="color:#72CBFD; font-size: 42px;">NBA Scoring Chart</p>'
+    new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px;">NBA Scoring Chart</p>'
     st.markdown(new_title, unsafe_allow_html=True)
     # st.title('NBA Scoring Chart')
     st.markdown("""
@@ -592,7 +592,7 @@ properties = {"border": "1px solid #707280",
 col1, col2 = st.columns(2)
 with col1:
     # st.header('Season Leaderboard')
-    new_title = '<p style="color:#72CBFD; font-size: 30px;">Season Leaderboard</p>'
+    new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 30px;">Season Leaderboard</p>'
     st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(attempt_df
                  .style
@@ -602,7 +602,7 @@ with col1:
                 )
 with col2:
     # st.header('Game Leaderboard')
-    new_title = '<p style="color:#72CBFD; font-size: 30px;">Game Leaderboard</p>'
+    new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 30px;">Game Leaderboard</p>'
     st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(game_df
                  .style
