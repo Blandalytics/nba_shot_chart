@@ -150,7 +150,7 @@ default_date = season_df['GAME_DATE'].max()
 default_player = list(season_df.loc[season_df['GAME_DATE']==default_date].groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index)[0]
 player_list = list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index)
 
-pad1, col1, col2, pad2 = st.columns([0.2,0.3,0.3,0.2])
+pad1, col1, col2, pad2 = st.columns([0.1,0.4,0.4,0.1])
 with col1:
     player_name = st.selectbox('Select a player',
                                list(season_df.groupby('PLAYER_NAME')['PTS'].sum().sort_values(ascending=False).index), 
