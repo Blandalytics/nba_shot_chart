@@ -574,6 +574,11 @@ else:
         .round(2)
         .sort_values('Pts',ascending=False)
     )
+    
+headers = {
+    "selector": "th:not(.index_name)",
+    "props": "background-color: #292C42; color: #ffffff;"
+}
 
 col1, col2 = st.columns(2)
 with col1:
@@ -584,9 +589,8 @@ with col1:
                  .style
                  .format(precision=1)
                  .set_table_styles([
-                        {'selector': 'th', 'props': 'text-align: center; background-color: #292C42;color: #ffffff'},
-                        {'selector': 'td', 'props': 'text-align: center; background-color: #292C42;color: #ffffff;'},
-                    ], overwrite=True)
+                        headers,
+                    ])
                  # .set_properties(**{'background-color': '#292C42',
                  #                    'color': '#ffffff'})
                 )
