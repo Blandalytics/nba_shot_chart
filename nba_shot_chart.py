@@ -25,7 +25,7 @@ pl_line_color = '#293a6b'
 
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
-
+print(prop)
 sns.set(font='Alexandria')
 sns.set_theme(
     style={
