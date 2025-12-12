@@ -45,7 +45,7 @@ sns.set_theme(
 nba_players = players.get_active_players()
 
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
-pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
+pad1, col1, pad2 = st.columns([0.1,0.8,0.1])
 with col1:
     new_title = '<p style="color:#72CBFD; font-weight: bold; font-size: 42px;">NBA Scoring Chart</p>'
     st.markdown(new_title, unsafe_allow_html=True)
