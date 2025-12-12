@@ -41,7 +41,7 @@ sns.set_theme(
     # font='Alexandria'
     )
 # sns.set(font='Alexandria')
-
+st.write()
 nba_players = players.get_active_players()
 
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
