@@ -574,11 +574,20 @@ else:
         .round(2)
         .sort_values('Pts',ascending=False)
     )
-    
+
+index_names = {
+    "selector": ".index_name",
+    "props": "background-color: #800000; color: white; text-align: center;"
+}
+
 headers = {
     "selector": "th:not(.index_name)",
-    "props": "background-color: #292C42; color: #ffffff;"
+    "props": "background-color: #800000; color: white; text-align: center"
 }
+properties = {"border": "1px solid #707280", 
+              'background-color': '#292C42',
+              'color': '#ffffff', 
+              "text-align": "center"}
 
 col1, col2 = st.columns(2)
 with col1:
@@ -588,8 +597,8 @@ with col1:
     st.dataframe(attempt_df
                  .style
                  .format(precision=1)
-                 .set_properties(**{'background-color': '#292C42',
-                                    'color': '#ffffff'})
+                 .set_table_styles([index_names, headers])
+                 .set_properties(**properties)
                 )
 with col2:
     # st.header('Game Leaderboard')
@@ -598,8 +607,8 @@ with col2:
     st.dataframe(game_df
                  .style
                  .format(precision=1)
-                 .set_properties(**{'background-color': '#292C42',
-                                    'color': '#ffffff'})
+                 .set_table_styles([index_names, headers])
+                 .set_properties(**properties)
                 )
 
 
