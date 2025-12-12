@@ -433,7 +433,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     sns.despine()
     st.pyplot(fig,width='content')
 
-pad1, col1, pad2 = st.columns([0.225,0.55,0.225])
+pad1, col1, pad2 = st.columns([0.125,0.75,0.125])
 with col1:
     shot_summary(player_id)
     st.write("The [xFG% model](https://github.com/Blandalytics/nba_shot_chart/blob/main/xFG.png?raw=true) was trained on location data from the 2022-23, 2023-24, and 2024-25 seasons. If you're interested in the xFG% value of each X,Y, coordinate, a csv can be found [here](https://github.com/Blandalytics/nba_shot_chart/blob/main/nba_xFG_values.csv?raw=true).")
