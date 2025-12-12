@@ -19,7 +19,7 @@ from scipy.stats import gaussian_kde
 ## Set Styling
 # Plot Style
 pl_white = '#FEFEFE'
-pl_background = '#162B50'
+pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
