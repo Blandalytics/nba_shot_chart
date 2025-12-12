@@ -25,8 +25,6 @@ pl_line_color = '#293a6b'
 
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
-st.write(prop)
-sns.set(font='Alexandria')
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
@@ -41,6 +39,7 @@ sns.set_theme(
         'text.color': pl_white
      },
     )
+sns.set(font='Alexandria')
 
 nba_players = players.get_active_players()
 
