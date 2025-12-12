@@ -354,7 +354,9 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                        arrowprops=dict(color='g' if scored_more else 'purple',
                                        arrowstyle="-|>, head_width=0.25",
                                        edgecolor=pl_background,linewidth=3))
-    ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,fontproperties=prop)
+    ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,
+             # fontproperties=prop
+            )
     
     ax2 = fig.add_subplot(gs[:,0])
     
