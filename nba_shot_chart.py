@@ -7,6 +7,7 @@ import matplotlib.colors as colors
 import matplotlib.pyplot as plt
 import matplotlib.font_manager as fm
 import os
+import plotly.graph_objects as go
 import time
 
 from matplotlib.gridspec import GridSpec
@@ -48,7 +49,7 @@ pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
 with col1:
     new_title = '<p style="color:#72CBFD; font-size: 42px;">NBA Scoring Chart</p>'
     st.markdown(new_title, unsafe_allow_html=True)
-    # st.title('NBA Scoring Chart',color='#72CBFD')
+    # st.title('NBA Scoring Chart')
     st.markdown("""
     NBA players earn points through a combination of:
     - Shot volume (more shots = more points; the average shot scores ~1.09 points)
@@ -576,13 +577,16 @@ else:
 
 col1, col2 = st.columns(2)
 with col1:
-    st.header('Season Leaderboard')
+    # st.header('Season Leaderboard')
+    new_title = '<p style="color:#72CBFD; font-size: 30px;">Season Leaderboard</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(attempt_df)
 with col2:
-    st.header('Game Leaderboard')
+    # st.header('Game Leaderboard')
+    new_title = '<p style="color:#72CBFD; font-size: 30px;">Game Leaderboard</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(game_df)
 
-import plotly.graph_objects as go
 
 def plotly_chart(points_agg):    
     shot_thresh = points_agg['SHOT_ATTEMPTED_FLAG'].quantile(0.75)
