@@ -588,11 +588,8 @@ with col1:
     st.dataframe(attempt_df
                  .style
                  .format(precision=1)
-                 .set_table_styles([
-                        headers,
-                    ])
-                 # .set_properties(**{'background-color': '#292C42',
-                 #                    'color': '#ffffff'})
+                 .set_properties(**{'background-color': '#292C42',
+                                    'color': '#ffffff'})
                 )
 with col2:
     # st.header('Game Leaderboard')
