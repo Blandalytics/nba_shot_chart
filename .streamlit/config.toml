@@ -1,10 +1,6 @@
 [server]
 enableStaticServing = true
 
-[[theme.fontFaces]]
-family="alexandria"
-url="Alexandria:https://fonts.googleapis.com/css2?family=Alexandria:ital,wght@0,400..700;1,400..700&display=swap"
-
 [theme]
 base = 'dark'
 font = "Alexandria:https://fonts.googleapis.com/css2?family=Alexandria:ital,wght@0,400..700;1,400..700&display=swap"
