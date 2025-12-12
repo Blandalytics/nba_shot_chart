@@ -25,6 +25,7 @@ pl_line_color = '#293a6b'
 
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
+st.write(matplotlib.font_manager.get_font_names())
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
