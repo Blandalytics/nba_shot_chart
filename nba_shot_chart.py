@@ -586,7 +586,7 @@ with col1:
                  .set_table_styles([
                         {'selector': 'th', 'props': 'text-align: center; background-color: #292C42;color: #ffffff'},
                         {'selector': 'td', 'props': 'text-align: center; background-color: #292C42;color: #ffffff;'},
-                    ], overwrite=False)
+                    ], overwrite=True)
                  # .set_properties(**{'background-color': '#292C42',
                  #                    'color': '#ffffff'})
                 )
