@@ -583,8 +583,12 @@ with col1:
     st.dataframe(attempt_df
                  .style
                  .format(precision=1)
-                 .set_properties(**{'background-color': '#292C42',
-                                    'color': '#ffffff'})
+                 .set_table_styles([
+                        {'selector': 'th', 'props': 'text-align: center; background-color: #292C42;color: #ffffff'},
+                        {'selector': 'td', 'props': 'text-align: center; background-color: #292C42;color: #ffffff;'},
+                    ], overwrite=False)
+                 # .set_properties(**{'background-color': '#292C42',
+                 #                    'color': '#ffffff'})
                 )
 with col2:
     # st.header('Game Leaderboard')
