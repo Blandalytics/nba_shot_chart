@@ -46,7 +46,9 @@ nba_players = players.get_active_players()
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
 pad1, col1, pad2 = st.columns([0.2,0.6,0.2])
 with col1:
-    st.title('NBA Scoring Chart')
+    new_title = '<p style="color:#72CBFD; font-size: 30px;">NBA Scoring Chart</p>'
+    st.markdown(new_title, unsafe_allow_html=True)
+    # st.title('NBA Scoring Chart',color='#72CBFD')
     st.markdown("""
     NBA players earn points through a combination of:
     - Shot volume (more shots = more points; the average shot scores ~1.09 points)
