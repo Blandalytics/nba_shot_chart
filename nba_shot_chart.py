@@ -23,10 +23,10 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-fpath = os.path.join(os.getcwd(), 'Arimo/Arimo-Regular.ttf')
+fpath = os.path.join(os.getcwd(), 'Inconsolata/Inconsolata-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
 
-sns.set(font='Arimo')
+sns.set(font='Inconsolata')
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
