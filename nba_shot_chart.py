@@ -23,8 +23,8 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-# fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
-# prop = fm.FontProperties(fname=fpath)
+fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
+prop = fm.FontProperties(fname=fpath)
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
@@ -38,7 +38,7 @@ sns.set_theme(
         'legend.facecolor':pl_background,
         'text.color': pl_white
      },
-    # font='Alexandria'
+    font='Alexandria'
     )
 # sns.set(font='Alexandria')
 st.write()
