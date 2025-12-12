@@ -580,12 +580,14 @@ with col1:
     # st.header('Season Leaderboard')
     new_title = '<p style="color:#72CBFD; font-size: 30px;">Season Leaderboard</p>'
     st.markdown(new_title, unsafe_allow_html=True)
-    st.dataframe(attempt_df)
+    st.dataframe(attempt_df.style.set_properties(**{'background-color': '#292C42',
+                                                    'color': '#ffffff'}))
 with col2:
     # st.header('Game Leaderboard')
     new_title = '<p style="color:#72CBFD; font-size: 30px;">Game Leaderboard</p>'
     st.markdown(new_title, unsafe_allow_html=True)
-    st.dataframe(game_df)
+    st.dataframe(game_df.style.set_properties(**{'background-color': '#292C42',
+                                                 'color': '#ffffff'}))
 
 
 def plotly_chart(points_agg):    
