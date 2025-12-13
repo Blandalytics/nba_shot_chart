@@ -29,7 +29,7 @@ prop = load_google_font("Alexandria")
 font_dirs = ["app/static"]  # The path to the custom font file.
 font_files = fm.findSystemFonts(fontpaths=font_dirs)
 # for font_file in font_files:
-fm.fontManager.addfont('https://nba-scoring-chart.streamlit.app/app/static/Alexandria-VariableFont_wght.ttf')
+fm.fontManager.addfont('nba-scoring-chart/app/static/Alexandria-VariableFont_wght.ttf')
 # st.write(fm.get_font_names())
 
 # fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
