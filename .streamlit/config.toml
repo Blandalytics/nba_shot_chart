@@ -1,9 +1,13 @@
 [server]
 enableStaticServing = true
 
+[[theme.fontFaces]]
+family="alexandria"
+url="app/static/Alexandria-VariableFont_wght.ttf"
+
 [theme]
 base = 'dark'
-font = "Alexandria:https://fonts.googleapis.com/css2?family=Alexandria:ital,wght@0,400..700;1,400..700&display=swap"
+font = "alexandria"
 backgroundColor = "#101222"
 dataframeBorderColor = "#707280"
 dataframeHeaderBackgroundColor = "#101222"
