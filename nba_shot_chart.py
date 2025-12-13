@@ -27,6 +27,7 @@ font_dirs = ["/Alexandria"]  # The path to the custom font file.
 font_files = fm.findSystemFonts(fontpaths=font_dirs)
 for font_file in font_files:
     fm.fontManager.addfont(font_file)
+    st.write(font_file)
 
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
@@ -45,7 +46,6 @@ sns.set_theme(
      },
     font='Alexandria'
     )
-st.write(prop)
 nba_players = players.get_active_players()
 
 st.set_page_config(page_title='NBA Scoring Chart', page_icon='🏀',layout='wide')
