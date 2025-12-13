@@ -25,15 +25,6 @@ pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
 prop = load_google_font("Alexandria")
-
-# font_dirs = ["app/static"]  # The path to the custom font file.
-# font_files = fm.findSystemFonts(fontpaths=font_dirs)
-# # for font_file in font_files:
-# fm.fontManager.addfont('nba-scoring-chart/app/static/Alexandria-VariableFont_wght.ttf')
-# st.write(fm.get_font_names())
-
-# fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
-# prop = fm.FontProperties(font)
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
@@ -302,9 +293,9 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     
     ax1.set(xlim=(-250,250),ylim=(-53,400),aspect=1)
     ax1.set_axis_off()
-    ax1.text(242.5,385,'@blandalytics',ha='right',fontweight='light')
+    ax1.text(242.5,385,'@blandalytics',ha='right',fontproperties=prop)
     if shot_limit == shot_thresh:
-        ax1.text(0,5-y_adj,f'*Last {shot_thresh} shots*',ha='center',fontweight='light',fontsize=10)
+        ax1.text(0,5-y_adj,f'*Last {shot_thresh} shots*',ha='center',fontweight='light',fontsize=10, fontproperties=prop)
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
@@ -362,7 +353,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        arrowstyle="-|>, head_width=0.25",
                                        edgecolor=pl_background,linewidth=3))
     ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,
-             # fontproperties=prop
+             fontproperties=prop
             )
     
     ax2 = fig.add_subplot(gs[:,0])
@@ -399,10 +390,11 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
         )
         ax2.text(categories[i],max_val*1.075,f'{categories[i]:}',
                  fontsize=11,
-                ha='center',va='center',color='w')
+                ha='center',va='center',color='w', fontproperties=prop)
         ax2.text(categories[i],cumulative_values[i],f'{values[i]:+.1f}',
                  fontsize=10 if season_long else 12,
-                ha='center',va='center',color=color,fontweight='bold',
+                ha='center',va='center',color=color,#fontweight='bold',
+                fontproperties=prop,
                 bbox=dict(boxstyle='round', fc='w', ec=color))
         
     xlim = (-1/(len(categories)-1),len(categories)-1+3/(len(categories)))
@@ -421,26 +413,26 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                 color='w',
                 xmin=xlim[0]+0.22,
                 xmax=(xlim[1]+0.4) / x_width)
-    ax2.text(1,max_val*1.15,f'Pts via Shots: {shot_points:.0f}',ha='center',fontsize=13)
-    ax2.text(4,max_val*1.15,f'Pts via Free Throws: {ft_points:.0f}',ha='center',fontsize=13)
-    ax2.text((len(categories)-1)/2,max_val*1.225,f'{points_scored} Points Scored',ha='center',fontsize=18)
+    ax2.text(1,max_val*1.15,f'Pts via Shots: {shot_points:.0f}',ha='center',fontsize=13, fontproperties=prop)
+    ax2.text(4,max_val*1.15,f'Pts via Free Throws: {ft_points:.0f}',ha='center',fontsize=13, fontproperties=prop)
+    ax2.text((len(categories)-1)/2,max_val*1.225,f'{points_scored} Points Scored',ha='center',fontsize=18, fontproperties=prop)
     ax2.axis('off')
     ax2.set(xlim=(xlim[0]-0.4,xlim[1]),
            ylim=(0,max_val*1.25))
     ax2.axvline((len(categories)-1)/2,ymax=0.95,color='w',alpha=0.25)
-    ax2.text(4.1,0,'nba-scoring-chart.streamlit.app',va='bottom',ha='center',fontweight='light', fontsize=10)
+    ax2.text(4.1,0,'nba-scoring-chart.streamlit.app',va='bottom',ha='center',fontweight='light', fontsize=10, fontproperties=prop)
     
     player_name = game_data['PLAYER_NAME'].iloc[0]
     if season_long:
         fig.suptitle(f'Scoring Summary: {player_name} (2025-26)\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',
-                     # fontproperties=prop
+                     fontproperties=prop
                     )
     else:
         date_text = game_date.strftime('%#m/%#d/%y')
         fig.suptitle(f'Scoring Summary: {player_name} ({date_text})\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',
-                     # fontproperties=prop
+                     fontproperties=prop
                     )
     
     sns.despine()
