@@ -25,7 +25,9 @@ pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
 font = load_google_font("Alexandria")
-set_default_font(font)
+# set_default_font(font)
+fm.fontManager.addfont(str(font.get_file()))
+st.write(font.get_name())
 # st.write(font)
 sns.set_theme(
     style={
