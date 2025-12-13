@@ -15,7 +15,7 @@ from nba_api.stats.endpoints import PlayerGameLogs
 from nba_api.stats.endpoints import shotchartdetail
 from nba_api.stats.static import players
 from scipy.stats import gaussian_kde
-from pyfonts import load_google_font
+from pyfonts import set_default_font, load_google_font
 
 ## Set Styling
 # Plot Style
@@ -24,7 +24,8 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-prop = load_google_font("Alexandria")
+font = load_google_font("Alexandria")
+set_default_font(font)
 st.write(prop)
 sns.set_theme(
     style={
@@ -294,9 +295,13 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
     
     ax1.set(xlim=(-250,250),ylim=(-53,400),aspect=1)
     ax1.set_axis_off()
-    ax1.text(242.5,385,'@blandalytics',ha='right',fontproperties=prop)
+    ax1.text(242.5,385,'@blandalytics',ha='right',
+             # fontproperties=prop
+            )
     if shot_limit == shot_thresh:
-        ax1.text(0,5-y_adj,f'*Last {shot_thresh} shots*',ha='center',fontweight='light',fontsize=10, fontproperties=prop)
+        ax1.text(0,5-y_adj,f'*Last {shot_thresh} shots*',ha='center',fontweight='light',fontsize=10, 
+                 # fontproperties=prop
+                )
     
     cb = fig.colorbar(hb, location='top',orientation='horizontal',
                       ax=ax1, label='',shrink=0.94, panchor=(0.5,0),
@@ -354,7 +359,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                                        arrowstyle="-|>, head_width=0.25",
                                        edgecolor=pl_background,linewidth=3))
     ax1.text(0,475,f'xPts/Shot: {expected_points:.2f}            Pts/Shot: {actual_points:.2f}',ha='center',va='center',fontsize=18,
-             fontproperties=prop
+             # fontproperties=prop
             )
     
     ax2 = fig.add_subplot(gs[:,0])
