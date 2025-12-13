@@ -42,7 +42,7 @@ sns.set_theme(
         'legend.facecolor':pl_background,
         'text.color': pl_white
      },
-    # font=font
+    font='Alexandria'
     )
 nba_players = players.get_active_players()
 
