@@ -23,6 +23,11 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
+font_dirs = ["/Alexandria"]  # The path to the custom font file.
+font_files = font_manager.findSystemFonts(fontpaths=font_dirs)
+for font_file in font_files:
+    fm.addfont(font_file)
+
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
 prop = fm.FontProperties(fname=fpath)
 sns.set_theme(
