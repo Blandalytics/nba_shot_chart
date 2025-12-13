@@ -26,7 +26,7 @@ pl_line_color = '#293a6b'
 
 font = load_google_font("Alexandria")
 set_default_font(font)
-st.write(prop)
+# st.write(prop)
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
