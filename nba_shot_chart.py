@@ -23,7 +23,7 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-font_dirs = ["/Alexandria"]  # The path to the custom font file.
+font_dirs = ["app/Alexandria"]  # The path to the custom font file.
 font_files = fm.findSystemFonts(fontpaths=font_dirs)
 for font_file in font_files:
     fm.fontManager.addfont(font_file)
