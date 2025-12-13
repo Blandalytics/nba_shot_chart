@@ -24,7 +24,7 @@ pl_background = '#292C42'
 pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
-font = load_google_font("Alexandria")
+prop = load_google_font("Alexandria")
 
 # font_dirs = ["app/static"]  # The path to the custom font file.
 # font_files = fm.findSystemFonts(fontpaths=font_dirs)
@@ -33,7 +33,7 @@ fm.fontManager.addfont(font)
 st.write(fm.get_font_names())
 
 # fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
-prop = fm.FontProperties(font)
+# prop = fm.FontProperties(font)
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
@@ -47,7 +47,7 @@ sns.set_theme(
         'legend.facecolor':pl_background,
         'text.color': pl_white
      },
-    # font=prop
+    font='Alexandria'
     )
 nba_players = players.get_active_players()
 
