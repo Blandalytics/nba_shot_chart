@@ -25,6 +25,7 @@ pl_text = '#72a3f7'
 pl_line_color = '#293a6b'
 
 prop = load_google_font("Alexandria")
+st.write(prop)
 sns.set_theme(
     style={
         'axes.edgecolor': pl_background,
@@ -38,7 +39,7 @@ sns.set_theme(
         'legend.facecolor':pl_background,
         'text.color': pl_white
      },
-    font='Alexandria'
+    # font='Alexandria'
     )
 nba_players = players.get_active_players()
 
