@@ -26,7 +26,7 @@ pl_line_color = '#293a6b'
 # font_dirs = ["app/static"]  # The path to the custom font file.
 # font_files = fm.findSystemFonts(fontpaths=font_dirs)
 # for font_file in font_files:
-fm.addfont('https://github.com/Blandalytics/nba_shot_chart/blob/main/static/Alexandria-VariableFont_wght.ttf?raw=true')
+fm.fontManager.addfont('https://github.com/Blandalytics/nba_shot_chart/blob/main/static/Alexandria-VariableFont_wght.ttf?raw=true')
 st.write(fmget_font_names())
 
 fpath = os.path.join(os.getcwd(), 'Alexandria/Alexandria-Regular.ttf')
