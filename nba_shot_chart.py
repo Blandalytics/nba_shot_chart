@@ -609,7 +609,7 @@ with col1:
     st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(attempt_df
                  .style
-                 .format(precision=1)
+                 .format(precision=2 if per_shot else 1)
                  .set_table_styles([index_names, headers])
                  .set_properties(**properties)
                 )
@@ -619,7 +619,7 @@ with col2:
     st.markdown(new_title, unsafe_allow_html=True)
     st.dataframe(game_df
                  .style
-                 .format(precision=1)
+                 .format(precision=2 if per_shot else 1)
                  .set_table_styles([index_names, headers])
                  .set_properties(**properties)
                 )
