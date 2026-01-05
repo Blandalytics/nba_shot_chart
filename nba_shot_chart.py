@@ -437,7 +437,7 @@ def shot_summary(player_id,game_date=game_date, season_long=season_long):
                      fontproperties=font
                     )
     else:
-        date_text = game_date.strftime('%#m/%#d/%y')
+        date_text = game_date.strftime('%-m/%-d/%y')
         fig.suptitle(f'Scoring Summary: {player_name} ({date_text})\n',fontsize=24, 
                      x=0.51,y=0.91,ha='center',va='center',
                      fontproperties=font
